@@ -7,25 +7,25 @@
 
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Hugo Theme MemE</title>
-        <link>https://example.com/</link>
+        <title>Blog of Tinys</title>
+        <link>https://lsongseven.github.io/</link>
         <description>MemE is a powerful and highly customizable GoHugo theme for personal blogs.</description>
         <generator>Hugo 0.74.3 https://gohugo.io/</generator>
         
             <language>en</language>
         
         
-            <managingEditor>reuixiy@gmail.com (reuixiy)</managingEditor>
+            <managingEditor>lsongseven@gmail.com (lsongseven)</managingEditor>
         
         
-            <webMaster>reuixiy@gmail.com (reuixiy)</webMaster>
+            <webMaster>lsongseven@gmail.com (lsongseven)</webMaster>
         
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)</copyright>
         
-        <lastBuildDate>Fri, 28 Aug 2020 18:32:20 &#43;0800</lastBuildDate>
+        <lastBuildDate>Fri, 28 Aug 2020 18:44:12 &#43;0800</lastBuildDate>
         
-            <atom:link rel="self" type="application/rss&#43;xml" href="https://example.com/rss.xml" />
+            <atom:link rel="self" type="application/rss&#43;xml" href="https://lsongseven.github.io/rss.xml" />
         
         
     </channel>
