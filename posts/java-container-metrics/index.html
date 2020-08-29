@@ -18,7 +18,7 @@
 
     
     
-        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.184027b38b3353eb43afbc50b89ac7710a6b9663f00fe005e3b5b591b40379d9.js" integrity="sha256-GEAns4szU&#43;tDr7xQuJrHcQprlmPwD&#43;AF47W1kbQDedk="></script>
+        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.33dab1f64a89b02336cf59d3a12eed39b24f71992923afa559130bd0b71803a7.js" integrity="sha256-M9qx9kqJsCM2z1nToS7tObJPcZkpI6&#43;lWRML0LcYA6c="></script>
 
     
 
@@ -59,7 +59,7 @@ container_memory_usage_bytes == container_memory_rss &#43; container_memory_cach
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "datePublished": "2020-08-28T22:58:25+08:00",
-        "dateModified": "2020-08-28T23:14:36+08:00",
+        "dateModified": "2020-08-29T13:34:53+08:00",
         "url": "https://lsongseven.github.io/posts/java-container-metrics/",
         "headline": "Java进程容器内存监控指标",
         "description": "以container_memory_usage_bytes作为memory指标 过去的一段时间内，xxx服务在prometheus上面用来监控内存的指标是以容器内存使用量（率）来衡量的，如下：\ncontainer_memory_usage_bytes{pod=~\"xxx.*-[^-]*-[^-]*$\", image!=\"\", container!=\"POD\"}*100/container_spec_memory_limit_bytes{pod=~\"xxx.*-[^-]*-[^-]*$\", image!=\"\", container!=\"POD\"} \u003e 80.0 xxx服务在kubernetes中的资源配置情况如下，\nresources: limits: cpu: \"2\" memory: \"4Gi\" requests: cpu: \"100m\" memory: \"512Mi\" 在这样的配置下，上面监控rule的语义就是，当容器内使用内存量达到容器最大内存（4G）的80%时发出告警。\n再来看下container_memory_usage_bytes如何定义，在cadvisor上面一个issue中提到：\ncontainer_memory_usage_bytes == container_memory_rss + container_memory_cache + container_memory_swap + kernel memory(issue中提到这里的kernel memory还未被暴露为metrics).\n看到rss, swap, cache这些指标很自然的就想到top，在top中也有一个指标叫做used，其定义为 ：“USED - simply the sum of RES and SWAP”, https://man7.",
@@ -115,7 +115,7 @@ container_memory_usage_bytes == container_memory_rss &#43; container_memory_cach
 <meta property="og:locale" content="en" /><meta property="og:image" content="https://lsongseven.github.io/icons/apple-touch-icon.png" />
     <meta property="og:type" content="article" />
     <meta property="article:published_time" content="2020-08-28T22:58:25&#43;08:00" />
-    <meta property="article:modified_time" content="2020-08-28T23:14:36&#43;08:00" />
+    <meta property="article:modified_time" content="2020-08-29T13:34:53&#43;08:00" />
     
     <meta property="article:section" content="posts" />
 
@@ -242,7 +242,7 @@ container_memory_usage_bytes == container_memory_rss &#43; container_memory_cach
     
     
         
-        <time datetime="2020-08-28T23:14:36&#43;08:00" class="post-meta-item modified"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M400 64h-48V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H160V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H48C21.49 64 0 85.49 0 112v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V160h352v298a6 6 0 0 1-6 6zm-52.849-200.65L198.842 404.519c-4.705 4.667-12.303 4.637-16.971-.068l-75.091-75.699c-4.667-4.705-4.637-12.303.068-16.971l22.719-22.536c4.705-4.667 12.303-4.637 16.97.069l44.104 44.461 111.072-110.181c4.705-4.667 12.303-4.637 16.971.068l22.536 22.718c4.667 4.705 4.636 12.303-.069 16.97z"/></svg>&nbsp;2020.8.28</time>
+        <time datetime="2020-08-29T13:34:53&#43;08:00" class="post-meta-item modified"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M400 64h-48V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H160V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H48C21.49 64 0 85.49 0 112v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V160h352v298a6 6 0 0 1-6 6zm-52.849-200.65L198.842 404.519c-4.705 4.667-12.303 4.637-16.971-.068l-75.091-75.699c-4.667-4.705-4.637-12.303.068-16.971l22.719-22.536c4.705-4.667 12.303-4.637 16.97.069l44.104 44.461 111.072-110.181c4.705-4.667 12.303-4.637 16.971.068l22.536 22.718c4.667 4.705 4.636 12.303-.069 16.97z"/></svg>&nbsp;2020.8.29</time>
     
     
     
@@ -437,9 +437,9 @@ java进程内部堆内内存和堆外内存很健康，没有看到大量占用�
 
         
     <div class="updated-badge-container">
-        <span title="Updated @ 2020-08-28 23:14:36 CST" style="cursor:help">
+        <span title="Updated @ 2020-08-29 13:34:53 CST" style="cursor:help">
 
-<svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2020-08-28</text><text x="915" y="140" textLength="650" transform="scale(.1)">2020-08-28</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2020-08-29</text><text x="915" y="140" textLength="650" transform="scale(.1)">2020-08-29</text></g></svg>
         </span></div>
 
 
