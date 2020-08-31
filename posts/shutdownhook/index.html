@@ -18,7 +18,7 @@
 
     
     
-        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.91331c349c46577d8c82351aa5f1c20a3588af27a880177a7b039334c77d2e2a.js" integrity="sha256-kTMcNJxGV32MgjUapfHCCjWIryeogBd6ewOTNMd9Lio="></script>
+        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.1ea93792232a4e03fd482a1d0b829b6916a529ecc56362e4ae0c578bda5f27ab.js" integrity="sha256-Hqk3kiMqTgP9SCodC4KbaRalKezFY2LkrgxXi9pfJ6s="></script>
 
     
 
@@ -529,11 +529,7 @@ wait $child
         
 
         
-            <div id="vcomments"></div>
-        
 
-        
-            <div id="utterances"></div>
         
 
     
@@ -616,76 +612,7 @@ wait $child
         
 
         
-            <script>
-    function loadComments() {
-        if (typeof Valine === 'undefined') {
-            var getScript = (options) => {
-                var script = document.createElement('script');
-                script.defer = true;
-                script.crossOrigin = 'anonymous';
-                Object.keys(options).forEach((key) => {
-                    script[key] = options[key];
-                });
-                document.body.appendChild(script);
-            };
-            getScript({
-                src: 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
-                onload: () => {
-                    newValine();
-                }
-            });
-        } else {
-            newValine();
-        }
-    }
-    function newValine() {
-        new Valine({
-            el: '#vcomments',
-            appId: '',
-            appKey: '',
-            placeholder: 'Just go go',
-            path: location.pathname,
-            avatar: 'mm',
-            meta: ["nick","mail","link"],
-            pageSize:  10 ,
-            lang: 'en',
-            visitor:  false ,
-            highlight:  true ,
-            avatarForce:  false ,
-            recordIP:  false ,
-            serverURLs: '',
-            emojiCDN: '',
-            emojiMaps: {},
-            enableQQ:  false ,
-            requiredFields: []
-        });
-    }
-</script>
 
-        
-
-        
-            <script>
-    function loadComments() {
-        (function() {
-            var utterances = document.getElementById("utterances");
-            var script = document.createElement('script');
-            script.src = 'https://utteranc.es/client.js';
-            script.async = true;
-            script.crossOrigin = 'anonymous';
-            script.setAttribute('repo', '');
-            script.setAttribute('issue-term', 'pathname');
-            const isDark = getCurrentTheme() === 'dark';
-        if (isDark) {
-            script.setAttribute('theme', 'photon-dark');
-        } else {
-            script.setAttribute('theme', 'github-light');
-        }
-            
-            utterances.appendChild(script);
-        })();
-    }
-</script>
         
 
     
