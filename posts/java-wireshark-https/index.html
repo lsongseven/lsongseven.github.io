@@ -14,11 +14,11 @@
 
     <title>Java中如何用wireshark抓取https | Blog of Tinys</title>
 
-    <link rel="stylesheet" href="/css/meme.min.bab5f1b09de098aab0a82c44cfae45e88ddce1ea7694564ba0072b703e064479.css" integrity="sha256-urXxsJ3gmKqwqCxEz65F6I3c4ep2lFZLoAcrcD4GRHk=" />
+    <link rel="stylesheet" href="/css/meme.min.f98a6ff9196e131b3cf1af2863f7343b2c59a0f06acd162cbc4aa34d6c083aa2.css" integrity="sha256-&#43;Ypv&#43;RluExs88a8oY/c0OyxZoPBqzRYsvEqjTWwIOqI=" />
 
     
     
-        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.184027b38b3353eb43afbc50b89ac7710a6b9663f00fe005e3b5b591b40379d9.js" integrity="sha256-GEAns4szU&#43;tDr7xQuJrHcQprlmPwD&#43;AF47W1kbQDedk="></script>
+        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.8a3d91a0c9adf6cf6ac56419ca32b2a2717052ce9ed7b7e3ba5da59b8ab9a8f9.js" integrity="sha256-ij2RoMmt9s9qxWQZyjKyonFwUs6e17fjul2lm4q5qPk="></script>
 
     
 
@@ -577,6 +577,37 @@ Error: SerializationException: Type definitions should start with a '{', expecti
 
 
         
+    
+
+        <div class="load-comments">
+            <div id="load-comments">Load Comments?</div>
+        </div>
+
+        
+
+        
+          <div id="vcomments"></div>
+          <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+          <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+          <script type="text/javascript">
+            new Valine({
+                el: '#vcomments' ,
+                appId: 'NtCvUfoQxGCkzB3Fb1fKgPl6-gzGzoHsz',
+                appKey: 'TYWqgSWlpf003x3iHKIaeY7h',
+                
+                
+                avatar:'mm', 
+                placeholder: '吐槽',
+                visitor: 'false'
+            });
+          </script>
+        
+
+        
+
+    
+
 
 
     </div>
@@ -621,6 +652,63 @@ Error: SerializationException: Type definitions should start with a '{', expecti
 
 
 
+
+    
+
+        
+
+        
+            <script>
+    function loadComments() {
+        if (typeof Valine === 'undefined') {
+            var getScript = (options) => {
+                var script = document.createElement('script');
+                script.defer = true;
+                script.crossOrigin = 'anonymous';
+                Object.keys(options).forEach((key) => {
+                    script[key] = options[key];
+                });
+                document.body.appendChild(script);
+            };
+            getScript({
+                src: 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+                onload: () => {
+                    newValine();
+                }
+            });
+        } else {
+            newValine();
+        }
+    }
+    function newValine() {
+        new Valine({
+            el: '#vcomments',
+            appId: 'NtCvUfoQxGCkzB3Fb1fKgPl6-gzGzoHsz',
+            appKey: 'TYWqgSWlpf003x3iHKIaeY7h',
+            placeholder: '吐槽',
+            path: location.pathname,
+            avatar: 'mm',
+            meta: ["nick","mail","link"],
+            pageSize:  10 ,
+            lang: 'en',
+            visitor:  false ,
+            highlight:  true ,
+            avatarForce:  false ,
+            recordIP:  false ,
+            serverURLs: 'https:\/\/ntcvufoq.lc-cn-n1-shared.com',
+            emojiCDN: '',
+            emojiMaps: {},
+            enableQQ:  false ,
+            requiredFields: []
+        });
+    }
+</script>
+
+        
+
+        
+
+    
 
 
 
