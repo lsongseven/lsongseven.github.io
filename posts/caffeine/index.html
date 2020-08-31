@@ -64,7 +64,7 @@ Expiration Policy caffeine中的过期策略有两种，分别是fixed expiratio
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "datePublished": "2020-08-27T17:47:55+08:00",
-        "dateModified": "2020-08-28T22:15:24+08:00",
+        "dateModified": "2020-08-28T09:15:37+08:00",
         "url": "https://lsongseven.github.io/posts/caffeine/",
         "headline": "Caffeine内存缓存",
         "description": "Eviction Policy 在caffeine中缓存的管理使用的是Window TinyLFU(W-TinyLFU)的技术，结构如下图\n先来解释一下各个部分：\nwindow cache（绿色部分）: 新对象存入的区域；考虑到缓存的驱逐策略是基于类似LFU的粗略，这里的window cache是对新加入对象的一个保护策略，这些对象会现在window cache中呆一段时间，然后累积一定的frequency之后（LRU策略将其淘汰的时候）才会到TinyLFU中与其他缓存进行frequency的battle，决定去留； main cache （红色和蓝色部分）：大部分缓存所在的区域； TinyLFU (紫色部分，一个admission filter）：当window cache空间存满之后，来自window cache区域的victim将会和来自main cache区域的victim进行比较，判断二者出现频率的大小，如果前者更大，那么将会将前者插入main cache，淘汰掉后者；反之，淘汰掉前者；\n下面这个图可以更好的帮助了解Window TinyLFU的过程\n在caffeine中，window cache所占大小约为总cache大小的1%，这是一个调参之后的结果，Window TinyLFU的作者做过大量实验证明在大多数的情况下1%能够实现缓存的最大命中率。\n在TinyLFU中，使用count min sketch的方式来进行频率的估算，所谓count min sketch，就是利用多个哈希函数来对某个对象的频率进行计数，然后在计算这个对象的频率时，选择最小的哈希函数的计数值最为他的频率（这里可以考虑一种在单一哈希函数下的一个场景，如果有一个热键，他出现的频率很高，哈希之后的键位h1，然后又有一个很冷的键，出现的频率很低，然而由于哈希函数的碰撞其哈希之后的键也为h1，那么这就会造成很难淘汰这个冷键。这里采用多个哈希函数可以很好的规避这种情况）。\ncount min sketch的结构如下图：\n在TinyLFU中，为了使缓存能够有一定的“鲜活性”，在每一次access的时候都会将缓存技术乘以一个aging factor（默认为2），这样的一个操作被称为“Reset”。这样做的好处是可以规避掉历史的“惯性”，举个例子，比如在视频网站上之前一个很火的剧，被点击了上亿次，如果不加以aging的措施的话，可能会一直霸榜，这不是我们希望看到的。\n下面再来说一下main cache部分，采用的是Segmented LRU策略，即SLRU。其中会有两个部分：\nprotected，这部分的对象比较安全，但是如果protected队列满了之后会将lru淘汰入probation队列。 probation，这部分的对象较为危险，如果probation队列满了之后会淘汰lru的对象，但是如果这部分中的对象又再次被访问之后此对象会升级进入protected队列。\nExpiration Policy caffeine中的过期策略有两种，分别是fixed expiration policy和variable expiration policy，下面进行简单介绍。",
@@ -126,12 +126,12 @@ Expiration Policy caffeine中的过期策略有两种，分别是fixed expiratio
 <meta property="og:locale" content="en" /><meta property="og:image" content="https://lsongseven.github.io/image/caffeine/caffeine.png" />
 <meta property="og:type" content="article" />
     <meta property="article:published_time" content="2020-08-27T17:47:55&#43;08:00" />
-    <meta property="article:modified_time" content="2020-08-28T22:15:24&#43;08:00" />
+    <meta property="article:modified_time" content="2020-08-28T09:15:37&#43;08:00" />
     
     <meta property="article:section" content="posts" />
 
 
-        <meta name="google-site-verification" content="google09b82e5b4d6af52b" />
+        <meta name="google-site-verification" content="yes" />
         <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
 
         
@@ -181,7 +181,7 @@ Expiration Policy caffeine中的过期策略有两种，分别是fixed expiratio
             
         
             
-                <li class="menu-item"><a href="/about/me"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="icon user-circle"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><span class="menu-item-name">About</span></a>
+                <li class="menu-item"><a href="/about"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="icon user-circle"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><span class="menu-item-name">About</span></a>
                 </li>
             
         
@@ -266,7 +266,7 @@ Expiration Policy caffeine中的过期策略有两种，分别是fixed expiratio
     
     
         
-        <time datetime="2020-08-28T22:15:24&#43;08:00" class="post-meta-item modified"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M400 64h-48V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H160V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H48C21.49 64 0 85.49 0 112v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V160h352v298a6 6 0 0 1-6 6zm-52.849-200.65L198.842 404.519c-4.705 4.667-12.303 4.637-16.971-.068l-75.091-75.699c-4.667-4.705-4.637-12.303.068-16.971l22.719-22.536c4.705-4.667 12.303-4.637 16.97.069l44.104 44.461 111.072-110.181c4.705-4.667 12.303-4.637 16.971.068l22.536 22.718c4.667 4.705 4.636 12.303-.069 16.97z"/></svg>&nbsp;2020.8.28</time>
+        <time datetime="2020-08-28T09:15:37&#43;08:00" class="post-meta-item modified"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M400 64h-48V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H160V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H48C21.49 64 0 85.49 0 112v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V160h352v298a6 6 0 0 1-6 6zm-52.849-200.65L198.842 404.519c-4.705 4.667-12.303 4.637-16.971-.068l-75.091-75.699c-4.667-4.705-4.637-12.303.068-16.971l22.719-22.536c4.705-4.667 12.303-4.637 16.97.069l44.104 44.461 111.072-110.181c4.705-4.667 12.303-4.637 16.971.068l22.536 22.718c4.667 4.705 4.636 12.303-.069 16.97z"/></svg>&nbsp;2020.8.28</time>
     
     
     
@@ -352,7 +352,7 @@ probation，这部分的对象较为危险，如果probation队列满了之后�
 
         
     <div class="updated-badge-container">
-        <span title="Updated @ 2020-08-28 22:15:24 CST" style="cursor:help">
+        <span title="Updated @ 2020-08-28 09:15:37 CST" style="cursor:help">
 
 <svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2020-08-28</text><text x="915" y="140" textLength="650" transform="scale(.1)">2020-08-28</text></g></svg>
         </span></div>
@@ -497,7 +497,7 @@ probation，这部分的对象较为危险，如果probation队列满了之后�
             
     
         <ul class="socials"><li class="socials-item">
-                    <a href="mailto:lsongseven@gmail.com" target="_blank" rel="external noopener" title="Email"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon social-icon"><path d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm0 48v40.805c-22.422 18.259-58.168 46.651-134.587 106.49-16.841 13.247-50.201 45.072-73.413 44.701-23.208.375-56.579-31.459-73.413-44.701C106.18 199.465 70.425 171.067 48 152.805V112h416zM48 400V214.398c22.914 18.251 55.409 43.862 104.938 82.646 21.857 17.205 60.134 55.186 103.062 54.955 42.717.231 80.509-37.199 103.053-54.947 49.528-38.783 82.032-64.401 104.947-82.653V400H48z"/></svg></a>
+                    <a href="mailto:reongseven@gmail.com" target="_blank" rel="external noopener" title="Email"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon social-icon"><path d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm0 48v40.805c-22.422 18.259-58.168 46.651-134.587 106.49-16.841 13.247-50.201 45.072-73.413 44.701-23.208.375-56.579-31.459-73.413-44.701C106.18 199.465 70.425 171.067 48 152.805V112h416zM48 400V214.398c22.914 18.251 55.409 43.862 104.938 82.646 21.857 17.205 60.134 55.186 103.062 54.955 42.717.231 80.509-37.199 103.053-54.947 49.528-38.783 82.032-64.401 104.947-82.653V400H48z"/></svg></a>
                 </li><li class="socials-item">
                     <a href="https://github.com/lsongseven" target="_blank" rel="external noopener" title="GitHub"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon social-icon"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
                 </li><li class="socials-item">
