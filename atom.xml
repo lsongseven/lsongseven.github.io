@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
     <title type="text">Blog of Tinys</title>
     <subtitle type="html">MemE is a powerful and highly customizable GoHugo theme for personal blogs.</subtitle>
-    <updated>2020-08-31T16:36:04&#43;08:00</updated>
+    <updated>2020-08-31T16:51:21&#43;08:00</updated>
     <id>https://lsongseven.github.io/</id>
     <link rel="alternate" type="text/html" href="https://lsongseven.github.io/" />
     <link rel="self" type="application/atom&#43;xml" href="https://lsongseven.github.io/atom.xml" />
