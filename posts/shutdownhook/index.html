@@ -525,24 +525,9 @@ wait $child
         </div>
 
         
-            <div id="disqus_thread"></div>
-            <script>
 
-            
-
-            
-
-            (function() { 
-            var d = document, s = d.createElement('script');
-            s.src = 'https://lsongseven.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-            })();
-            </script>
-            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-                                        
         
-
+            <div id="vcomments"></div>
         
 
         
@@ -597,34 +582,53 @@ wait $child
     
 
         
-            <script>
-    function loadComments() {
-        if (typeof DISQUS === 'undefined') {
-            var disqus_config = function() {
-                this.page.url = 'https:\/\/lsongseven.github.io\/posts\/shutdownhook\/';
-                this.page.identifier = '\/posts\/shutdownhook\/';
-                this.page.title = '如何在kubernetes中优雅停机';
-            };
-            (function() {
-                var d = document, s = d.createElement('script'); s.async = true;
-                s.src = 'https://lsongseven.disqus.com/embed.js';
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-            })();
-        } else {
-            DISQUS.reset({
-                reload: true,
-                config: function() {
-                    this.page.url = 'https:\/\/lsongseven.github.io\/posts\/shutdownhook\/';
-                    this.page.identifier = '\/posts\/shutdownhook\/';
-                    this.page.title = '如何在kubernetes中优雅停机';
-                }
-            });
-        }
-    }
-</script>
 
         
+            <script>
+    function loadComments() {
+        if (typeof Valine === 'undefined') {
+            var getScript = (options) => {
+                var script = document.createElement('script');
+                script.defer = true;
+                script.crossOrigin = 'anonymous';
+                Object.keys(options).forEach((key) => {
+                    script[key] = options[key];
+                });
+                document.body.appendChild(script);
+            };
+            getScript({
+                src: 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+                onload: () => {
+                    newValine();
+                }
+            });
+        } else {
+            newValine();
+        }
+    }
+    function newValine() {
+        new Valine({
+            el: '#vcomments',
+            appId: 'NtCvUfoQxGCkzB3Fb1fKgPl6-gzGzoHsz',
+            appKey: 'TYWqgSWlpf003x3iHKIaeY7h',
+            placeholder: '吐槽',
+            path: location.pathname,
+            avatar: 'mm',
+            meta: ["nick","mail","link"],
+            pageSize:  10 ,
+            lang: 'en',
+            visitor:  false ,
+            highlight:  true ,
+            avatarForce:  false ,
+            recordIP:  false ,
+            serverURLs: 'https:\/\/ntcvufoq.lc-cn-n1-shared.com',
+            emojiCDN: '',
+            emojiMaps: {},
+            enableQQ:  false ,
+            requiredFields: []
+        });
+    }
+</script>
 
         
 
