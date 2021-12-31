@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
     <title type="text">Blog of Tinys</title>
     <subtitle type="html">MemE is a powerful and highly customizable GoHugo theme for personal blogs.</subtitle>
-    <updated>2021-12-31T18:03:19&#43;08:00</updated>
+    <updated>2021-12-31T18:24:04&#43;08:00</updated>
     <id>https://lsongseven.github.io/</id>
     <link rel="alternate" type="text/html" href="https://lsongseven.github.io/" />
     <link rel="self" type="application/atom&#43;xml" href="https://lsongseven.github.io/atom.xml" />
@@ -20,7 +20,7 @@
             <title type="text">基于antlr4构建规则引擎简介</title>
             <link rel="alternate" type="text/html" href="https://lsongseven.github.io/posts/antlr4/" />
             <id>https://lsongseven.github.io/posts/antlr4/</id>
-            <updated>2021-12-31T17:59:14&#43;08:00</updated>
+            <updated>2021-12-31T18:23:58&#43;08:00</updated>
             <published>2021-12-31T17:47:55&#43;08:00</published>
             <author>
                     <name>lsongseven</name>
@@ -44,7 +44,7 @@ antlr最新的大版本是v4，了解相关变更详情可参考 Why do we need 
 &lt;li&gt;&amp;hellip;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;antlr可以对某一种语言描述，根据对应的语法，生成一颗语法树，在这颗语法树中包含了语言描述与对应语法规则的关系。当你去遍历这颗语法树时，可以灵活处理遍历前和遍历后的规则，实现某种效果。（可以理解为根据一组确定的语法规则，处理一段数据，如实现某种声明、运算、调用等，从而得到某种结果）&lt;/p&gt;
-&lt;p&gt;antlr最新的大版本是v4，了解相关变更详情可参考 Why do we need ANTLR v4&lt;/p&gt;
+&lt;p&gt;antlr最新的大版本是v4，了解相关变更详情可参考 &lt;a href=&#34;https://github.com/antlr/antlr4/blob/master/doc/faq/general.md&#34;&gt;Why do we need ANTLR v4&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;2可以用来做什么&#34;&gt;2.可以用来做什么&lt;/h2&gt;
 &lt;p&gt;antlr可以用来做各种各样的事情，比如本文要说的基于antlr4构建的规则引擎。 除此之外，还有海量的场景可以用到antlr，比如&lt;/p&gt;
 &lt;ul&gt;
@@ -54,7 +54,7 @@ antlr最新的大版本是v4，了解相关变更详情可参考 Why do we need 
 &lt;li&gt;&amp;hellip;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;3用antlr4实现类golang语法解析器的规则引擎&#34;&gt;3.用antlr4实现类golang语法解析器的规则引擎&lt;/h2&gt;
-&lt;p&gt;最近在研究规则引擎相关的实现，g社上发现一个bilibili的开源项目gengine，基于antlr4实现了类golang的语法解析器，下面我们来以gengine为例看一下如何基于antlr4实现这个事情。&lt;/p&gt;
+&lt;p&gt;最近在研究规则引擎相关的实现，g社上发现一个bilibili的开源项目&lt;a href=&#34;https://github.com/bilibili/gengine&#34;&gt;gengine&lt;/a&gt;，基于antlr4实现了类golang的语法解析器，下面我们来以gengine为例看一下如何基于antlr4实现这个事情。&lt;/p&gt;
 &lt;p&gt;下面文件中描述了一个规则的表达，其中具体的规则部分表达与golang语法基本类似。这个就是在gengine中规则描述的基本形式，在gengine中，用户可以根据具体的场景构造若干个规则，通过这个规则去做一些事情。下面的描述中， rule为固定的规则描述声明词，&amp;ldquo;rulename&amp;rdquo; &amp;ldquo;rule-description&amp;rdquo; 为规则的名称和描述，salience为固定的规则优先级描述声明词，后面的10代表这个规则的优先级为10。begin和end中包围的部分为具体的规则内容，在gengine中其表达方式类似于golang的语法。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -74,7 +74,7 @@ begin
 end
 &lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;对应的antlr4中的语法描述文件(gengine.g4，为了展示方便省略了部分内容，全部内容可通过链接查看)如下，具体的.g4文件结构可参考 Grammer Structure&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;对应的antlr4中的语法描述文件(&lt;a href=&#34;https://github.com/bilibili/gengine/blob/main/internal/iantlr/gengine.g4&#34;&gt;gengine.g4&lt;/a&gt;，为了展示方便省略了部分内容，全部内容可通过链接查看)如下，具体的.g4文件结构可参考 &lt;a href=&#34;https://github.com/antlr/antlr4/blob/master/doc/grammars.md&#34;&gt;Grammer Structure&lt;/a&gt;&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-g4&#34; data-lang=&#34;g4&#34;&gt;grammar gengine;
 
 primary: ruleEntity+;
@@ -462,7 +462,7 @@ $ antlr4 -Dlanguage&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;Go -o parser geng
 &lt;span class=&#34;c1&#34;&gt;// ...
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;到这里似乎基于antlr4构建规则引擎的事情就做完了，用户可以随意声明一段规则，然后基于规则去做对应的业务判断。antlr4帮助我们做的其实是将输入文本转换为一个根据.g4文件的语法树，具体要怎么用这个语法树就是使用者应该考虑的事情，在规则引擎这个范畴下，可以参考gengine对应的实现。另外，可以参考他们的test，里面有很多不同的用法。&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;到这里似乎基于antlr4构建规则引擎的事情就做完了，用户可以随意声明一段规则，然后基于规则去做对应的业务判断。antlr4帮助我们做的其实是将输入文本转换为一个根据.g4文件的语法树，具体要怎么用这个语法树就是使用者应该考虑的事情，在规则引擎这个范畴下，可以参考gengine对应的实现。另外，可以参考他们的&lt;a href=&#34;https://github.com/bilibili/gengine/tree/main/test&#34;&gt;test&lt;/a&gt;，里面有很多不同的用法。&lt;/p&gt;
 &lt;h2 id=&#34;4参考&#34;&gt;4.参考&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
