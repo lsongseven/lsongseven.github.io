@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
     <title type="text">Blog of Tinys</title>
     <subtitle type="html">MemE is a powerful and highly customizable GoHugo theme for personal blogs.</subtitle>
-    <updated>2020-08-31T20:34:08&#43;08:00</updated>
+    <updated>2021-12-31T18:03:19&#43;08:00</updated>
     <id>https://lsongseven.github.io/</id>
     <link rel="alternate" type="text/html" href="https://lsongseven.github.io/" />
     <link rel="self" type="application/atom&#43;xml" href="https://lsongseven.github.io/atom.xml" />
@@ -15,12 +15,485 @@
                 <email>lsongseven@gmail.com</email>
             </author>
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)</rights>
-    <generator uri="https://gohugo.io/" version="0.74.3">Hugo</generator>
+    <generator uri="https://gohugo.io/" version="0.91.2">Hugo</generator>
+        <entry>
+            <title type="text">基于antlr4构建规则引擎简介</title>
+            <link rel="alternate" type="text/html" href="https://lsongseven.github.io/posts/antlr4/" />
+            <id>https://lsongseven.github.io/posts/antlr4/</id>
+            <updated>2021-12-31T17:59:14&#43;08:00</updated>
+            <published>2021-12-31T17:47:55&#43;08:00</published>
+            <author>
+                    <name>lsongseven</name>
+                    <uri>https://github.com/lsongseven</uri>
+                    <email>lsongseven@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)</rights><summary type="html">基于antlr4构建规则引擎简介 1.什么是antlr ANTLR (ANother Tool for Language Recognition) 是一个强大的文本或者二进制文件解析工具，被广泛应用于构建语法以及各种工具和框架。如
+ Twitter&amp;rsquo;s search query language MySQL Workbench Hibernate Trino (SQL query engine) &amp;hellip;  antlr可以对某一种语言描述，根据对应的语法，生成一颗语法树，在这颗语法树中包含了语言描述与对应语法规则的关系。当你去遍历这颗语法树时，可以灵活处理遍历前和遍历后的规则，实现某种效果。（可以理解为根据一组确定的语法规则，处理一段数据，如实现某种声明、运算、调用等，从而得到某种结果）
+antlr最新的大版本是v4，了解相关变更详情可参考 Why do we need ANTLR v4
+2.可以用来做什么 antlr可以用来做各种各样的事情，比如本文要说的基于antlr4构建的规则引擎。 除此之外，还有海量的场景可以用到antlr，比如
+ vscode中的插件，基于antlr做语法规则检查 grafana中的查询语法解析 格式转换工具，如json、yaml、xml等互相转换 &amp;hellip;  3.用antlr4实现类golang语法解析器的规则引擎 最近在研究规则引擎相关的实现，g社上发现一个bilibili的开源项目gengine，基于antlr4实现了类golang的语法解析器，下面我们来以gengine为例看一下如何基于antlr4实现这个事情。</summary>
+            
+                <content type="html">&lt;h1 id=&#34;基于antlr4构建规则引擎简介&#34;&gt;基于antlr4构建规则引擎简介&lt;/h1&gt;
+&lt;h2 id=&#34;1什么是antlr&#34;&gt;1.什么是antlr&lt;/h2&gt;
+&lt;p&gt;ANTLR (ANother Tool for Language Recognition) 是一个强大的文本或者二进制文件解析工具，被广泛应用于构建语法以及各种工具和框架。如&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Twitter&amp;rsquo;s search query language&lt;/li&gt;
+&lt;li&gt;MySQL Workbench&lt;/li&gt;
+&lt;li&gt;Hibernate&lt;/li&gt;
+&lt;li&gt;Trino (SQL query engine)&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;antlr可以对某一种语言描述，根据对应的语法，生成一颗语法树，在这颗语法树中包含了语言描述与对应语法规则的关系。当你去遍历这颗语法树时，可以灵活处理遍历前和遍历后的规则，实现某种效果。（可以理解为根据一组确定的语法规则，处理一段数据，如实现某种声明、运算、调用等，从而得到某种结果）&lt;/p&gt;
+&lt;p&gt;antlr最新的大版本是v4，了解相关变更详情可参考 Why do we need ANTLR v4&lt;/p&gt;
+&lt;h2 id=&#34;2可以用来做什么&#34;&gt;2.可以用来做什么&lt;/h2&gt;
+&lt;p&gt;antlr可以用来做各种各样的事情，比如本文要说的基于antlr4构建的规则引擎。 除此之外，还有海量的场景可以用到antlr，比如&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;vscode中的插件，基于antlr做语法规则检查&lt;/li&gt;
+&lt;li&gt;grafana中的查询语法解析&lt;/li&gt;
+&lt;li&gt;格式转换工具，如json、yaml、xml等互相转换&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;3用antlr4实现类golang语法解析器的规则引擎&#34;&gt;3.用antlr4实现类golang语法解析器的规则引擎&lt;/h2&gt;
+&lt;p&gt;最近在研究规则引擎相关的实现，g社上发现一个bilibili的开源项目gengine，基于antlr4实现了类golang的语法解析器，下面我们来以gengine为例看一下如何基于antlr4实现这个事情。&lt;/p&gt;
+&lt;p&gt;下面文件中描述了一个规则的表达，其中具体的规则部分表达与golang语法基本类似。这个就是在gengine中规则描述的基本形式，在gengine中，用户可以根据具体的场景构造若干个规则，通过这个规则去做一些事情。下面的描述中， rule为固定的规则描述声明词，&amp;ldquo;rulename&amp;rdquo; &amp;ldquo;rule-description&amp;rdquo; 为规则的名称和描述，salience为固定的规则优先级描述声明词，后面的10代表这个规则的优先级为10。begin和end中包围的部分为具体的规则内容，在gengine中其表达方式类似于golang的语法。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-txt&#34; data-lang=&#34;txt&#34;&gt;rule &amp;#34;rulename&amp;#34; &amp;#34;rule-description&amp;#34; salience  10
+begin
+
+//规则体
+
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;对应的antlr4中的语法描述文件(gengine.g4，为了展示方便省略了部分内容，全部内容可通过链接查看)如下，具体的.g4文件结构可参考 Grammer Structure&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-g4&#34; data-lang=&#34;g4&#34;&gt;grammar gengine;
+
+primary: ruleEntity+;
+
+ruleEntity:  RULE ruleName ruleDescription? salience? BEGIN ruleContent END;
+ruleName : stringLiteral;
+ruleDescription : stringLiteral;
+salience : SALIENCE integer;
+ruleContent : statements;
+statements: statement* returnStmt? ;
+
+statement : ifStmt | functionCall | methodCall  | threeLevelCall | assignment | concStatement  | forStmt | breakStmt |forRangeStmt | continueStmt;
+
+concStatement : CONC LR_BRACE ( functionCall | methodCall | threeLevelCall | assignment )* RR_BRACE;
+
+expression : mathExpression
+            | expression comparisonOperator expression
+            | expression logicalOperator expression
+            | notOperator ? expressionAtom
+            | notOperator ? LR_BRACKET expression  RR_BRACKET
+            ;
+
+mathExpression : mathExpression  mathMdOperator mathExpression
+               | mathExpression  mathPmOperator mathExpression
+               | expressionAtom
+               | LR_BRACKET mathExpression RR_BRACKET
+               ;
+
+expressionAtom
+    : functionCall
+    | methodCall
+    | threeLevelCall
+    | constant
+    | mapVar
+    | variable
+    ;
+
+assignment : (mapVar | variable) assignOperator (mathExpression| expression);
+
+returnStmt : RETURN expression?;
+
+ifStmt : IF expression LR_BRACE statements RR_BRACE elseIfStmt*  elseStmt? ;
+
+elseIfStmt : ELSE IF expression LR_BRACE statements RR_BRACE;
+
+elseStmt : ELSE LR_BRACE statements RR_BRACE;
+
+functionArgs
+    : (constant | variable  | functionCall | methodCall | threeLevelCall | mapVar | expression)  (&#39;,&#39;(constant | variable | functionCall | methodCall | threeLevelCall | mapVar | expression))*
+    ;
+
+integer : MINUS? INT;
+
+realLiteral : MINUS? REAL_LITERAL;
+
+stringLiteral: DQUOTA_STRING ;
+
+booleanLiteral : TRUE | FALSE;
+
+functionCall : SIMPLENAME LR_BRACKET functionArgs? RR_BRACKET;
+
+variable :  SIMPLENAME | DOTTEDNAME | DOUBLEDOTTEDNAME;
+
+mathPmOperator : PLUS | MINUS ;
+
+mathMdOperator : MUL | DIV ;
+
+comparisonOperator : GT | LT | GTE | LTE | EQUALS | NOTEQUALS ;
+
+assignOperator: ASSIGN | SET | PLUSEQUAL | MINUSEQUAL | MULTIEQUAL | DIVEQUAL ;
+
+// ...
+
+fragment DEC_DIGIT          : [0-9];
+fragment A                  : [aA] ;
+fragment B                  : [bB] ;
+fragment C                  : [cC] ;
+// ...
+fragment Z                  : [zZ] ;
+fragment EXPONENT_NUM_PART  : (&#39;E&#39;| &#39;e&#39;) &#39;-&#39;? DEC_DIGIT+;
+
+NIL                         : N I L;
+RULE                        : R U L E  ;
+AND                         : &#39;&amp;amp;&amp;amp;&#39; ;
+OR                          : &#39;||&#39; ;
+
+CONC                        : C O N C;
+IF                          : I F;
+ELSE                        : E L S E;
+RETURN                      : R E T U R N;
+
+// ...
+
+BEGIN                       : B E G I N;
+END                         : E N D;
+
+SIMPLENAME :  (&#39;a&#39;..&#39;z&#39; |&#39;A&#39;..&#39;Z&#39;| &#39;_&#39;)+ ( (&#39;0&#39;..&#39;9&#39;) | (&#39;a&#39;..&#39;z&#39; |&#39;A&#39;..&#39;Z&#39;) | &#39;_&#39; )* ;
+
+INT : &#39;0&#39;..&#39;9&#39; + ;
+PLUS                        : &#39;+&#39; ;
+MINUS                       : &#39;-&#39; ;
+DIV                         : &#39;/&#39; ;
+MUL                         : &#39;*&#39; ;
+
+EQUALS                      : &#39;==&#39; ;
+GT                          : &#39;&amp;gt;&#39; ;
+LT                          : &#39;&amp;lt;&#39; ;
+GTE                         : &#39;&amp;gt;=&#39; ;
+// ...
+
+SEMICOLON                   : &#39;;&#39; ;
+LR_BRACE                    : &#39;{&#39;;
+RR_BRACE                    : &#39;}&#39;;
+LR_BRACKET                  : &#39;(&#39;;
+RR_BRACKET                  : &#39;)&#39;;
+DOT                         : &#39;.&#39; ;
+DQUOTA_STRING               : &#39;&amp;quot;&#39; ( &#39;\\&#39;. | &#39;&amp;quot;&amp;quot;&#39; | ~(&#39;&amp;quot;&#39;| &#39;\\&#39;) )* &#39;&amp;quot;&#39;;
+DOTTEDNAME                  : SIMPLENAME DOT SIMPLENAME  ;
+DOUBLEDOTTEDNAME            : SIMPLENAME DOT SIMPLENAME DOT SIMPLENAME;
+REAL_LITERAL                : (DEC_DIGIT+)? &#39;.&#39; DEC_DIGIT+
+                            | DEC_DIGIT+ &#39;.&#39; EXPONENT_NUM_PART
+                            | (DEC_DIGIT+)? &#39;.&#39; (DEC_DIGIT+ EXPONENT_NUM_PART)
+                            | DEC_DIGIT+ EXPONENT_NUM_PART
+                            ;
+
+SL_COMMENT: &#39;//&#39; .*? &#39;\n&#39; -&amp;gt; skip ;
+WS  :   [ \t\n\r]+ -&amp;gt; skip ;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上述.g4文件声明了gengine中依赖的语法规则。按照这种语法规则，假设当前有以下一段输入&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-txt&#34; data-lang=&#34;txt&#34;&gt;rule &amp;#34;elseif_test&amp;#34; &amp;#34;test&amp;#34;
+begin
+
+a = 8
+if a &amp;lt; 1 {
+        println(&amp;#34;a &amp;lt; 1&amp;#34;)
+} else if a &amp;gt;= 1 &amp;amp;&amp;amp; a &amp;lt;6 {
+        println(&amp;#34;a &amp;gt;= 1 &amp;amp;&amp;amp; a &amp;lt;6&amp;#34;)
+} else {
+        println(&amp;#34;a &amp;gt;= 6&amp;#34;)
+}
+
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;根据gengine.g4文件中提供的语法规则，antlr4将输入内容组织成一颗语法树，语法树的结构可见下图。遍历这颗语法树，可以获得对应的语法树结构，这是实现规则引擎的基础。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lsongseven.github.io/image/antlr/if_else.png&#34; alt=&#34;image&#34;&gt;&lt;/p&gt;
+&lt;p&gt;下面谈一下antlr4是如何做到这个事情的。可以通过如下命令来解析.g4文件，执行之后生成了几种类型的文件&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ wget &amp;lt;http://www.antlr.org/download/antlr-4.7-complete.jar&amp;gt;
+$ &lt;span class=&#34;nb&#34;&gt;alias&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;antlr4&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;java -jar $PWD/antlr-4.7-complete.jar&amp;#39;&lt;/span&gt;
+$ antlr4 -Dlanguage&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;Go -o parser gengine.g4
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;A. lexer&lt;/p&gt;
+&lt;p&gt;lexer的作用是将任意的文本输入返回为一系列token，如上述例子中假设输入为 a &amp;lt; 1 , lexer会返回SIMPLENAME(a), LT(&amp;lt;), INT(1)&lt;/p&gt;
+&lt;p&gt;B. parser&lt;/p&gt;
+&lt;p&gt;parser的作用是接受lexer的输出并将其用于语法规则(rule)，构造更高级别的结构，比如将expression赋值给variable。&lt;/p&gt;
+&lt;p&gt;C. listener&lt;/p&gt;
+&lt;p&gt;经过parser，我们的输入已经成为了一个符合.g4文件中语法的语法树，listener的作用就是提供了遍历节点前和节点后的hooks，这些hooks中具体的函数要使用者根据具体的场景去实现。&lt;/p&gt;
+&lt;p&gt;遍历语法树后，我们可以得到一个与语法树对应的规则结构体，而这个结构体可以是规则引擎中的某个规则，规则可以实现func (r &lt;em&gt;RuleEntity) Execute(dc&lt;/em&gt;context.DataContext) (interface{}, error, bool) 方法来实现具体规则的效果。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;49
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 遍历语法树后得到的规则结构体，部分字段已忽略
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;RuleEntity&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;RuleName&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;Salience&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;int64&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;RuleDescription&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;RuleContent&lt;/span&gt;     &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;RuleContent&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;RuleContent&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;Statements&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Statements&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Statements&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;StatementList&lt;/span&gt;   &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Statement&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// ...
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Statement&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;IfStmt&lt;/span&gt;         &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;IfStmt&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;FunctionCall&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;FunctionCall&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;Assignment&lt;/span&gt;     &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Assignment&lt;/span&gt;
+       &lt;span class=&#34;c1&#34;&gt;// ...
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;IfStmt&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;Expression&lt;/span&gt;     &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Expression&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;StatementList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Statements&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;ElseIfStmtList&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ElseIfStmt&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;ElseStmt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ElseStmt&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Expression&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;SourceCode&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;ExpressionLeft&lt;/span&gt;     &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Expression&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;ExpressionRight&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Expression&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;ExpressionAtom&lt;/span&gt;     &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ExpressionAtom&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;MathExpression&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;MathExpression&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;LogicalOperator&lt;/span&gt;    &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;ComparisonOperator&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;NotOperator&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;// ...
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ElseIfStmt&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;Expression&lt;/span&gt;    &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Expression&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;StatementList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Statements&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;以IfStmt为例，简单介绍下在Execute中所做的事情。其实所做的事情很简单，就是正常的if逻辑，只不过在golang中用反射和语法树结构的下层调用表达出来，其中
+&lt;code&gt;dc *context.DataContext&lt;/code&gt; 与 &lt;code&gt;Vars map[string]reflect.Value&lt;/code&gt; 中存放了变量的值，如下&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;IfStmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Evaluate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dc&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;DataContext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Vars&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;reflect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;reflect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;error&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;bool&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+
+        &lt;span class=&#34;nx&#34;&gt;it&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;err&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Expression&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Evaluate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Vars&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;err&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+                &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;reflect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;ValueOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;err&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt;
+        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// if 条件命中
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;it&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Bool&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+                &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;StatementList&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+                        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;reflect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;ValueOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt;
+                &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+                        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;StatementList&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Evaluate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Vars&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+                &lt;span class=&#34;c1&#34;&gt;// else if 条件判断
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;                &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ElseIfStmtList&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+                        &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;_&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;elseIfStmt&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;range&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ElseIfStmtList&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+                                &lt;span class=&#34;nx&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;err&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;elseIfStmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Expression&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Evaluate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Vars&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                                &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;err&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+                                        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;reflect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;ValueOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;err&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt;
+                                &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+                                &lt;span class=&#34;c1&#34;&gt;// else if 条件命中
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;                                &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Bool&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+                                        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;elseIfStmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;StatementList&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Evaluate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Vars&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                                &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+                        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+                &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+                &lt;span class=&#34;c1&#34;&gt;// else 条件判断
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;                &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ElseStmt&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+                        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ElseStmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Evaluate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Vars&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+                        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;reflect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;ValueOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt;
+                &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;现在知道规则如何跑起来，思考的另一个事情是参数如何传递。因为以规则引擎为例，想做的事情可以概括为在某种条件某种规则约束下对应的输出的是什么。输入必须是动态的，这样某个规则才有存在的意义。gengine提供了注入外部变量和函数的方式来实现这个事情, 使用的方式如下&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 注入外部变量或者函数
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dataContext&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;NewDataContext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;dataContext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;println&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;fmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Println&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;dataContext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;a&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;nx&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;err&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;bx&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;rule&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dataContext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;// ...
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;到这里似乎基于antlr4构建规则引擎的事情就做完了，用户可以随意声明一段规则，然后基于规则去做对应的业务判断。antlr4帮助我们做的其实是将输入文本转换为一个根据.g4文件的语法树，具体要怎么用这个语法树就是使用者应该考虑的事情，在规则引擎这个范畴下，可以参考gengine对应的实现。另外，可以参考他们的test，里面有很多不同的用法。&lt;/p&gt;
+&lt;h2 id=&#34;4参考&#34;&gt;4.参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.antlr.org/&#34;&gt;https://www.antlr.org/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://blog.gopheracademy.com/advent-2017/parsing-with-antlr4-and-go/&#34;&gt;https://blog.gopheracademy.com/advent-2017/parsing-with-antlr4-and-go/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/bilibili/gengine&#34;&gt;https://github.com/bilibili/gengine&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+            
+        </entry>
+    
         <entry>
             <title type="text">Java进程容器内存监控指标</title>
             <link rel="alternate" type="text/html" href="https://lsongseven.github.io/posts/java-container-metrics/" />
             <id>https://lsongseven.github.io/posts/java-container-metrics/</id>
-            <updated>2020-08-31T16:04:33&#43;08:00</updated>
+            <updated>2021-12-31T17:40:56&#43;08:00</updated>
             <published>2020-08-21T19:52:30&#43;08:00</published>
             <author>
                     <name>lsongseven</name>
@@ -36,9 +509,9 @@ container_memory_usage_bytes == container_memory_rss + container_memory_cache + 
             
                 <content type="html">&lt;h1 id=&#34;以container_memory_usage_bytes作为memory指标&#34;&gt;以container_memory_usage_bytes作为memory指标&lt;/h1&gt;
 &lt;p&gt;过去的一段时间内，xxx服务在prometheus上面用来监控内存的指标是以容器内存使用量（率）来衡量的，如下：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;container_memory_usage_bytes{pod=~&amp;quot;xxx.*-[^-]*-[^-]*$&amp;quot;, image!=&amp;quot;&amp;quot;, container!=&amp;quot;POD&amp;quot;}*100/container_spec_memory_limit_bytes{pod=~&amp;quot;xxx.*-[^-]*-[^-]*$&amp;quot;, image!=&amp;quot;&amp;quot;, container!=&amp;quot;POD&amp;quot;} &amp;gt; 80.0
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;container_memory_usage_bytes{pod=~&amp;quot;xxx.*-[^-]*-[^-]*$&amp;quot;, image!=&amp;quot;&amp;quot;, container!=&amp;quot;POD&amp;quot;}*100/container_spec_memory_limit_bytes{pod=~&amp;quot;xxx.*-[^-]*-[^-]*$&amp;quot;, image!=&amp;quot;&amp;quot;, container!=&amp;quot;POD&amp;quot;} &amp;gt; 80.0
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;xxx服务在kubernetes中的资源配置情况如下，&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;resources:
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;resources:
   limits:
     cpu: &amp;quot;2&amp;quot;
     memory: &amp;quot;4Gi&amp;quot;
@@ -52,7 +525,7 @@ container_memory_usage_bytes == container_memory_rss + container_memory_cache + 
 &lt;h1 id=&#34;以container_memory_usage_bytes作为java容器内存指标的问题&#34;&gt;以container_memory_usage_bytes作为java容器内存指标的问题&lt;/h1&gt;
 &lt;h2 id=&#34;频繁告警&#34;&gt;频繁告警&lt;/h2&gt;
 &lt;p&gt;某刻xxx服务中某个pod中top指标如下&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;top - 05:35:43 up 7 days, 21:32,  0 users,  load average: 11.99, 11.35, 8.50
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;top - 05:35:43 up 7 days, 21:32,  0 users,  load average: 11.99, 11.35, 8.50
 Tasks:  10 total,   1 running,   9 sleeping,   0 stopped,   0 zombie
 %Cpu(s):  6.7 us,  6.5 sy,  0.0 ni, 85.9 id,  0.3 wa,  0.0 hi,  0.7 si,  0.0 st
 KiB Mem : 65960736 total,  7194880 free, 42443524 used, 16322332 buff/cache
@@ -74,7 +547,7 @@ KiB Swap:        0 total,        0 free,        0 used. 19621872 avail Mem
 &lt;h2 id=&#34;jvm指标&#34;&gt;JVM指标&lt;/h2&gt;
 &lt;p&gt;既然是java进程常驻内存很高，那么首先怀疑的就是jvm内存占用问题。&lt;/p&gt;
 &lt;p&gt;看一下堆内存，jmap -heap 9，发现很健康&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Heap Configuration:
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Heap Configuration:
    MinHeapFreeRatio         = 40
    MaxHeapFreeRatio         = 70
    MaxHeapSize              = 3221225472 (3072.0MB)
@@ -112,9 +585,9 @@ PS Old Generation
    free     = 2003888032 (1911.0565490722656MB)
    6.68669193983078% used
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;不信邪手动gc一下，发现RES并没有什么变化。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;jcmd 9 GC.run
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;jcmd 9 GC.run
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;到这里可以明白堆内内存没有什么问题，下一个怀疑对象是堆外内存。启动参数上加上-XX:NativeMemoryTracking=summary，然后jcmd 9 VM.native_memory summary scale=MB看一下发现依然很健康（虽然加上参数容器会重启，但下面数据也是在频繁告警的情况下获得的）&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Native Memory Tracking:
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Native Memory Tracking:
 
 Total: reserved=5261MB, committed=4124MB
 -                 Java Heap (reserved=3072MB, committed=3072MB)
@@ -160,9 +633,9 @@ Total: reserved=5261MB, committed=4124MB
 在我们应用中没有发生swap，所以造成告警的原因主要是java进程的RES很大；
 java进程内部堆内内存和堆外内存很健康，没有看到大量占用内存的迹象；
 不得不说top是一个很强大的工具，但是他也有很多的诟病，尤其是对于java进程来说，下面摘录一些国外开发者的抱怨：&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;&amp;quot;It really annoys me that there&amp;rsquo;s no good tool for measuring memory usage on Linux. There are tools, like &amp;lsquo;top&amp;rsquo;, but they often cause more harm than good - most people don&amp;rsquo;t even know what the fields really mean and only few people can interpret them correctly. Mind you, even I&amp;rsquo;m not sure I can, and in fact I sometimes doubt such person even exists. The problem is, even intepreting the numbers may not give the answer. Measuring memory usage on Linux is voodoo magic.&amp;ldquo;&lt;/em&gt;&lt;br&gt;
+&lt;p&gt;&lt;em&gt;&amp;ldquo;It really annoys me that there&amp;rsquo;s no good tool for measuring memory usage on Linux. There are tools, like &amp;lsquo;top&amp;rsquo;, but they often cause more harm than good - most people don&amp;rsquo;t even know what the fields really mean and only few people can interpret them correctly. Mind you, even I&amp;rsquo;m not sure I can, and in fact I sometimes doubt such person even exists. The problem is, even intepreting the numbers may not give the answer. Measuring memory usage on Linux is voodoo magic.&amp;quot;&lt;/em&gt;&lt;br&gt;
 &amp;ndash; from &lt;a href=&#34;https://blogs.kde.org/node/1445&#34;&gt;https://blogs.kde.org/node/1445&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;&amp;quot;This has been a long-standing complaint with Java, but it&amp;rsquo;s largely meaningless&amp;hellip;With a Java program, it&amp;rsquo;s far more important to pay attention to what&amp;rsquo;s happening in the heap. The total amount of space consumed is important, and there are some steps that you can take to reduce that. More important is the amount of time that you spend in garbage collection, and which parts of the heap are getting collected.&amp;ldquo;&lt;/em&gt;&lt;br&gt;
+&lt;p&gt;&lt;em&gt;&amp;ldquo;This has been a long-standing complaint with Java, but it&amp;rsquo;s largely meaningless&amp;hellip;With a Java program, it&amp;rsquo;s far more important to pay attention to what&amp;rsquo;s happening in the heap. The total amount of space consumed is important, and there are some steps that you can take to reduce that. More important is the amount of time that you spend in garbage collection, and which parts of the heap are getting collected.&amp;quot;&lt;/em&gt;&lt;br&gt;
 &amp;ndash; from &lt;a href=&#34;https://stackoverflow.com/questions/561245/virtual-memory-usage-from-java-under-linux-too-much-memory-used&#34;&gt;https://stackoverflow.com/questions/561245/virtual-memory-usage-from-java-under-linux-too-much-memory-used&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;最后的观点就是，对于java进程来说，我们的关注点不应该是RES，而应该将目光转向heap。查阅很多资料后，能找到的关于这个现象下RES高的最贴切的解释是下面的一段话：&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;When is Resident Set Size Important?&lt;/b&gt;&lt;/p&gt;
@@ -189,7 +662,7 @@ java进程内部堆内内存和堆外内存很健康，没有看到大量占用�
             <title type="text">如何在kubernetes中优雅停机</title>
             <link rel="alternate" type="text/html" href="https://lsongseven.github.io/posts/shutdownhook/" />
             <id>https://lsongseven.github.io/posts/shutdownhook/</id>
-            <updated>2020-08-31T20:33:22&#43;08:00</updated>
+            <updated>2021-12-31T17:40:56&#43;08:00</updated>
             <published>2020-07-17T22:34:57&#43;08:00</published>
             <author>
                     <name>lsongseven</name>
@@ -236,7 +709,7 @@ b. The container is sent the TERM signal. Note that not all containers in the Po
 &lt;p&gt;这里4.a中提到的preStop hook先不去管他，这是kubernetes提供的一种优雅停机方式。可以看到在4.b中，container会被发送TERM signal，而按照常理来说，如果我们的java进程收到这个TERM信号，那么就会优雅退出，shutdown hook就会执行。可是现实并没有按照我们想要的进行流转，问题就出在这个TERM信号这里。&lt;/p&gt;
 &lt;h1 id=&#34;entrypoint中的startupsh&#34;&gt;ENTRYPOINT中的startup.sh&lt;/h1&gt;
 &lt;p&gt;仔细查看我们的Dockerfile，大概的样式如下：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;#Dockerfile
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;#Dockerfile
 ...
 ENTRYPOINT [&amp;quot;bash&amp;quot;,&amp;quot;./startup.sh&amp;quot;]
 
@@ -250,7 +723,7 @@ do
 done
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样做的问题是什么呢？&lt;/p&gt;
 &lt;p&gt;可以先看一个例子，在容器中，输入ps -ef可以得到&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;[root@xxx-74bc7c554d-vvz4w envuser]# ps -ef
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[root@xxx-74bc7c554d-vvz4w envuser]# ps -ef
 UID         PID   PPID  C STIME TTY          TIME CMD
 root          1      0  0 Jul15 ?        00:00:32 bash ./startup.sh
 root         10      1  4 Jul15 ?        02:19:06 java -Xmx3072m,output=tcpse
@@ -260,11 +733,11 @@ root      94158  94141  0 02:55 pts/0    00:00:00 ps -ef
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以看到，1号进程是我们的bash ./startup.sh，而10号进程是真正服务所在的java进程，并且他是1号进程的子进程。问题就在这里，在pod关闭时，TERM信号只会发送给1号进程，而1号进程并不会将此TERM信号转发到下面的子进程，由此java进程收不到TERM信号，那么也就无法触发shutdown hook，无法优雅退出（最终应该时通过kill -9 pid这种方式退出的）。&lt;/p&gt;
 &lt;p&gt;那么现在的问题就在于如何将TERM信号传到java进程上，有两种方法：&lt;/p&gt;
 &lt;p&gt;第一种，使用在startup.sh中，使用下面的方式启动java进程，这里exec的作用是使java进程取代当前的bash进程作为1号进程，那么当TERM信号发送给1号进程的时候自然能够优雅退出。但是，这会带来一些问题，我们后面再说。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;#startup.sh
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;#startup.sh
 ...
 exec java $JAVA_OPTS -jar ./xxx.jar --server.port=8080 
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;第二种，也是推荐的一种，在startup.sh中利用trap捕获TERM信号，将其传递给下面的子进程，如下所示，至于为什么这么写，有一篇很好的参考文献 &lt;a href=&#34;http://veithen.io/2014/11/16/sigterm-propagation.html&#34;&gt;http://veithen.io/2014/11/16/sigterm-propagation.html&lt;/a&gt;：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;#startup.sh
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;#startup.sh
 ...
 trap &#39;kill -TERM $child&#39; TERM
 nohup java $JAVA_OPTS -jar ./xxx.jar --server.port=8080 &amp;amp;
@@ -278,7 +751,7 @@ wait $child
 &lt;p&gt;举个例子：&lt;/p&gt;
 &lt;p&gt;java (1) -&amp;gt; A process (10)，代表10号进程A process是1号java进程的子进程，当A process 终结的时候，会发送SIGCHILD信号唤醒java进程，期待其进行收割。但是假如java进程没有特殊的处理然后不理会这个信号，那么A process将会成为一个zombie process，即虽然已经终结了，但是依然占据一部分资源，这不是我们所希望看到的。&lt;/p&gt;
 &lt;p&gt;因此，推荐使用第二种方式，将bash作为1号进程，这样不必担心zombie process的问题。&lt;/p&gt;
-&lt;p&gt;这里再推荐一篇极佳的参考 &lt;a href=&#34;https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/,&#34;&gt;https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/,&lt;/a&gt; 极力推荐大家读一读。&lt;/p&gt;
+&lt;p&gt;这里再推荐一篇极佳的参考 &lt;a href=&#34;https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/&#34;&gt;https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/&lt;/a&gt;, 极力推荐大家读一读。&lt;/p&gt;
 &lt;h1 id=&#34;最后再说一下while-loop的问题&#34;&gt;最后再说一下while loop的问题&lt;/h1&gt;
 &lt;p&gt;在前面之前的startup.sh里面，可以看到最后面有一个while循环，有没有想过为什么要加这个东西？&lt;/p&gt;
 &lt;p&gt;其实根源在于它的上一句通过nohup &amp;hellip; &amp;amp;的方式启动了java进程，如果不在最后进行loop，那么startup.sh就会执行完毕而退出，带来的问题就是pod的状态变为completed的状态，也就是说pod认为任务已经执行完毕而自动退出了。作为一个web server端来说，肯定不能让他退出啊，所以在这里采用了while循环来阻止进程退出。不过这是历史问题了，在第二种startup.sh中，trap wait机制会阻塞进程直到子进程退出，因此后面也就不需要while loop这种东西了。最后再留个问题，为什么要两遍wait $child ?那篇参考文献中讲的很详细了 : )&lt;/p&gt;
@@ -300,7 +773,7 @@ wait $child
             <title type="text">Caffeine内存缓存</title>
             <link rel="alternate" type="text/html" href="https://lsongseven.github.io/posts/caffeine/" />
             <id>https://lsongseven.github.io/posts/caffeine/</id>
-            <updated>2020-08-31T16:04:54&#43;08:00</updated>
+            <updated>2021-12-31T17:40:56&#43;08:00</updated>
             <published>2020-06-23T17:47:55&#43;08:00</published>
             <author>
                     <name>lsongseven</name>
@@ -365,7 +838,7 @@ probation，这部分的对象较为危险，如果probation队列满了之后�
             <title type="text">Java中如何用wireshark抓取https</title>
             <link rel="alternate" type="text/html" href="https://lsongseven.github.io/posts/java-wireshark-https/" />
             <id>https://lsongseven.github.io/posts/java-wireshark-https/</id>
-            <updated>2020-08-31T16:03:57&#43;08:00</updated>
+            <updated>2021-12-31T17:40:56&#43;08:00</updated>
             <published>2020-03-19T21:32:58&#43;08:00</published>
             <author>
                     <name>lsongseven</name>
@@ -378,7 +851,7 @@ probation，这部分的对象较为危险，如果probation队列满了之后�
             
                 <content type="html">&lt;p&gt;最近遇到的一个问题是，在更换了https的加密协议后（从ssl更换到tls），之前的post请求总是返回400 bad request这样的问题。网上搜罗了一下，有很多人遇到同样的400 bad request，但是各自的具体情况不尽相同，因此没有找到有效的解决方法。&lt;/p&gt;
 &lt;p&gt;先说一下遇到的情况，对于某一个post请求，在postman中访问没有问题，但是在java代码中使用httpclient按照原先使用正常的方式去做请求，返回的response为一个null，没有其他具体信息，很难追溯。没有办法，只能一步一步跟进调试，一直跟到org.apache.http.impl.execchain包下MainClientExec.class这个类中，并且可以看到请求是正常发送出去，但是收到的response是null。由于对https的了解不是很足，起初怀疑是不是由于更换到tls后握手出现问题，于是调整org.apache.http这个包下的日志等级为debug，可以看到连接是正常建立，因此排除握手的问题。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:423)]-[DEBUG] Secure session established
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:423)]-[DEBUG] Secure session established
 
 2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:424)]-[DEBUG] negotiated protocol: TLSv1.2
 2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:425)]-[DEBUG] negotiated cipher suite: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
@@ -394,7 +867,7 @@ main, setSoTimeout(3000) called
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;线索断了之后，只能通过抓包的方式看看究竟发生了什么。这里要出现今天讲的主角wireshark，通过这个强大的工具进行抓包，增加ip和ssl的filter （ip.addr==xxx.yy.zzz.80 and ssl）之后可以看到与目标地址的通讯包。但是，由于是https，包中的流量是加密的，并不能进行分析。于是，如何解密抓取的https流量成为关键。&lt;/p&gt;
 &lt;p&gt;解密之前，首先要了解https的基本流程。这个网上有很多描述详细的文章，这边就不赘述。简单说一下，加密是通过指定的加密方法，结合客户端与服务端之间交换的两个随机数，再加上客户端用服务端提供证书上的public key加密的pre-master这个参数（外界是不知道这个参数的，这个参数由客户端生成，经过公钥加密后，只有服务端知道这个参数是什么），生成一个对称加密密钥。在握手结束后，客户端和服务端之间的通讯流量是采用对称加密算法来加密的，而加密的密钥是有握手阶段交换的随机数random_1，random_2以及pre-master和指定的加密算法生成的。这个过程中，最重要的一个参数就是pre-master，其他的参数都是可以通过抓包得到的。因此，如果能够拿到这个pre-master，那么就可以解密wireshark抓取的https流量。&lt;/p&gt;
 &lt;p&gt;在前面所说的场景中，我们是客户端，无法知道服务端提供证书的私钥，因此不能从wireshark抓取的包中解密来获得pre-master。但是，我们在代码中所做的请求是通过Apache提供的httpclient完成的，可以在启动时添加vmoption参数-Djavax.net.debug=ssl,keygen来获得tls连接中的一些重要参数。下面是建立连接过程中打印出的部分参数&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;*** ECDH ServerKeyExchange
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;*** ECDH ServerKeyExchange
 Signature Algorithm SHA512withRSA
 Server key: Sun EC public key, 256 bits
 public x coord: 82734322831099238985881665140172758067838155879895358323075425906443044790736
@@ -448,7 +921,7 @@ Server write IV:
 0000: 15 62 81 55 .b.U
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这里我们所要的pre-master就是Clinent Nounce , Master Secret hex值的组合，最后的把它们存在一个sslkey.log文件中，格式如下（手动操作很简单，也可以参考一个python脚本来操作）&lt;/p&gt;
 &lt;p&gt;CLIENT_RANDOM 5E731E001D49FA112BAF6B0CFFD8EF5C15DF90B27AE6516DFB83FBA484875ECD 1E53B5AFA6925E8E6B594F48C0BCAF64FDCDE60CA2610EBF6693065A4929E096E8287F9172C1D91CCC8134D2DB1370B4&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;##!/usr/bin/env python
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;##!/usr/bin/env python
 import re
 import sys
 
@@ -491,7 +964,7 @@ if __name__ == &#39;__main__&#39;:
     sys.exit(main())
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;获得了这个重要的pre-master参数后，就可以在wireshark中指定tls的pre-master-secret 文件的名字，于是可以解密https流量。&lt;/p&gt;
 &lt;p&gt;回归到要解决的问题，可以发现报出了这样的错误：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Frame 84: 538 bytes on wire (4304 bits), 538 bytes captured (4304 bits) on interface \Device\NPF_{1E884C5A-1654-4DF6-A7E8-01A37930B33B}, id 0
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Frame 84: 538 bytes on wire (4304 bits), 538 bytes captured (4304 bits) on interface \Device\NPF_{1E884C5A-1654-4DF6-A7E8-01A37930B33B}, id 0
 Ethernet II, Src: a2:39:20:00:08:00 (a2:39:20:00:08:00), Dst: 0f:00:08:00:00:00 (0f:00:08:00:00:00)
 Internet Protocol Version 4, Src: xxx.yy.zzz.80, Dst: aa.bb.cc.dd
 Transmission Control Protocol, Src Port: 443, Dst Port: 63636, Seq: 4343, Ack: 1042, Len: 484

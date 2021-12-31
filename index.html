@@ -3,7 +3,7 @@
     <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
     <meta charset="UTF-8" />
 
-    <meta name="generator" content="Hugo 0.74.3" /><meta name="theme-color" content="#fff" />
+    <meta name="generator" content="Hugo 0.91.2" /><meta name="theme-color" content="#fff" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
@@ -18,7 +18,7 @@
 
     
     
-        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.8a3d91a0c9adf6cf6ac56419ca32b2a2717052ce9ed7b7e3ba5da59b8ab9a8f9.js" integrity="sha256-ij2RoMmt9s9qxWQZyjKyonFwUs6e17fjul2lm4q5qPk="></script>
+        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.c7f21e9bef4b65c0fb001e85133740e15b56e4bc358804fd56b2462a49b94d1a.js" integrity="sha256-x/Iem&#43;9LZcD7AB6FEzdA4VtW5Lw1iAT9VrJGKkm5TRo="></script>
 
     
 
@@ -56,7 +56,7 @@
         "@context": "https://schema.org",
         "@type": "WebSite",
         "datePublished": "2019-07-20T20:17:43+00:00",
-        "dateModified": "2020-08-31T20:33:22+08:00",
+        "dateModified": "2021-12-31T17:59:14+08:00",
         "url": "https://lsongseven.github.io/",
         "description": "MemE is a powerful and highly customizable GoHugo theme for personal blogs.",
         "image": "https://lsongseven.github.io/icons/apple-touch-icon.png",
@@ -210,6 +210,50 @@
         <main class="main single" id="main">
     <div class="main-inner">
         
+        
+            <article class="content post home">
+                <h2 class="post-title">
+                    <a href="/posts/antlr4/" class="summary-title-link">基于antlr4构建规则引擎简介</a>
+                </h2>
+                
+                    
+
+<div class="post-meta">
+    
+        
+        <time datetime="2021-12-31T17:47:55&#43;08:00" class="post-meta-item published"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;2021.12.31</time>
+    
+    
+    
+    
+        
+        
+        
+            
+        
+    
+    
+    
+    
+        
+    
+    
+</div>
+
+                
+                <summary class="summary">
+                    基于antlr4构建规则引擎简介 1.什么是antlr ANTLR (ANother Tool for Language Recognition) 是一个强大的文本或者二进制文件解析工具，被广泛应用于构建语法以及各种工具和框架。如
+ Twitter&rsquo;s search query language MySQL Workbench Hibernate Trino (SQL query engine) &hellip;  antlr可以对某一种语言描述，根据对应的语法，生成一颗语法树，在这颗语法树中包含了语言描述与对应语法规则的关系。当你去遍历这颗语法树时，可以灵活处理遍历前和遍历后的规则，实现某种效果。（可以理解为根据一组确定的语法规则，处理一段数据，如实现某种声明、运算、调用等，从而得到某种结果）
+antlr最新的大版本是v4，了解相关变更详情可参考 Why do we need ANTLR v4
+2.可以用来做什么 antlr可以用来做各种各样的事情，比如本文要说的基于antlr4构建的规则引擎。 除此之外，还有海量的场景可以用到antlr，比如
+ vscode中的插件，基于antlr做语法规则检查 grafana中的查询语法解析 格式转换工具，如json、yaml、xml等互相转换 &hellip;  3.用antlr4实现类golang语法解析器的规则引擎 最近在研究规则引擎相关的实现，g社上发现一个bilibili的开源项目gengine，基于antlr4实现了类golang的语法解析器，下面我们来以gengine为例看一下如何基于antlr4实现这个事情。
+                </summary>
+                
+                    <div class="read-more-container">
+                        <a href="/posts/antlr4/" class="read-more-link">Read More »</a>
+                    </div>
+                
+            </article>
         
             <article class="content post home">
                 <h2 class="post-title">
@@ -415,7 +459,7 @@ Expiration Policy caffeine中的过期策略有两种，分别是fixed expiratio
             
     <footer id="footer" class="footer">
         <div class="footer-inner">
-            <div class="site-info">©&nbsp;2019–2020&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;lsongseven</div><div class="powered-by">Powered by <a href="https://github.com/gohugoio/hugo" target="_blank" rel="noopener">Hugo</a> | Theme is <a href="https://github.com/reuixiy/hugo-theme-meme" target="_blank" rel="noopener">MemE</a></div><div class="site-copyright"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a></div>
+            <div class="site-info">©&nbsp;2019–2021&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;lsongseven</div><div class="powered-by">Powered by <a href="https://github.com/gohugoio/hugo" target="_blank" rel="noopener">Hugo</a> | Theme is <a href="https://github.com/reuixiy/hugo-theme-meme" target="_blank" rel="noopener">MemE</a></div><div class="site-copyright"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a></div>
 
             
     

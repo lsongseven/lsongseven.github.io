@@ -3,7 +3,7 @@
     <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
     <meta charset="UTF-8" />
 
-    <meta name="generator" content="Hugo 0.74.3" /><meta name="theme-color" content="#fff" />
+    <meta name="generator" content="Hugo 0.91.2" /><meta name="theme-color" content="#fff" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
@@ -18,7 +18,7 @@
 
     
     
-        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.8a3d91a0c9adf6cf6ac56419ca32b2a2717052ce9ed7b7e3ba5da59b8ab9a8f9.js" integrity="sha256-ij2RoMmt9s9qxWQZyjKyonFwUs6e17fjul2lm4q5qPk="></script>
+        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.c7f21e9bef4b65c0fb001e85133740e15b56e4bc358804fd56b2462a49b94d1a.js" integrity="sha256-x/Iem&#43;9LZcD7AB6FEzdA4VtW5Lw1iAT9VrJGKkm5TRo="></script>
 
     
 
@@ -56,7 +56,7 @@
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "datePublished": "2020-03-19T21:32:58+08:00",
-        "dateModified": "2020-08-31T16:03:57+08:00",
+        "dateModified": "2021-12-31T17:40:56+08:00",
         "url": "https://lsongseven.github.io/posts/java-wireshark-https/",
         "headline": "Java中如何用wireshark抓取https",
         "description": "最近遇到的一个问题是，在更换了https的加密协议后（从ssl更换到tls），之前的post请求总是返回400 bad request这样的问题。网上搜罗了一下，有很多人遇到同样的400 bad request，但是各自的具体情况不尽相同，因此没有找到有效的解决方法。\n先说一下遇到的情况，对于某一个post请求，在postman中访问没有问题，但是在java代码中使用httpclient按照原先使用正常的方式去做请求，返回的response为一个null，没有其他具体信息，很难追溯。没有办法，只能一步一步跟进调试，一直跟到org.apache.http.impl.execchain包下MainClientExec.class这个类中，并且可以看到请求是正常发送出去，但是收到的response是null。由于对https的了解不是很足，起初怀疑是不是由于更换到tls后握手出现问题，于是调整org.apache.http这个包下的日志等级为debug，可以看到连接是正常建立，因此排除握手的问题。\n2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:423)]-[DEBUG] Secure session established 2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:424)]-[DEBUG] negotiated protocol: TLSv1.2 2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:425)]-[DEBUG] negotiated cipher suite: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 2020-03-19 16:10:35,120 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:433)]-[DEBUG] peer principal: CN=demo.bazefield.com, O=Bazefield A/S, L=Porsgrunn, C=NO 2020-03-19 16:10:35,120 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:442)]-[DEBUG] peer alternative names: [demo.bazefield.com, www.",
@@ -109,7 +109,7 @@
 <meta property="og:locale" content="en" /><meta property="og:image" content="https://lsongseven.github.io/icons/apple-touch-icon.png" />
     <meta property="og:type" content="article" />
     <meta property="article:published_time" content="2020-03-19T21:32:58&#43;08:00" />
-    <meta property="article:modified_time" content="2020-08-31T16:03:57&#43;08:00" />
+    <meta property="article:modified_time" content="2021-12-31T17:40:56&#43;08:00" />
     
     <meta property="article:section" content="posts" />
 
@@ -272,7 +272,7 @@
             <div class="post-body">
               <p style="text-indent:0"><span class="drop-cap">最</span>近遇到的一个问题是，在更换了https的加密协议后（从ssl更换到tls），之前的post请求总是返回400 bad request这样的问题。网上搜罗了一下，有很多人遇到同样的400 bad request，但是各自的具体情况不尽相同，因此没有找到有效的解决方法。</p>
 <p>先说一下遇到的情况，对于某一个post请求，在postman中访问没有问题，但是在java代码中使用httpclient按照原先使用正常的方式去做请求，返回的response为一个null，没有其他具体信息，很难追溯。没有办法，只能一步一步跟进调试，一直跟到org.apache.http.impl.execchain包下MainClientExec.class这个类中，并且可以看到请求是正常发送出去，但是收到的response是null。由于对https的了解不是很足，起初怀疑是不是由于更换到tls后握手出现问题，于是调整org.apache.http这个包下的日志等级为debug，可以看到连接是正常建立，因此排除握手的问题。</p>
-<pre><code>2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:423)]-[DEBUG] Secure session established
+<pre tabindex="0"><code>2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:423)]-[DEBUG] Secure session established
 
 2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:424)]-[DEBUG] negotiated protocol: TLSv1.2
 2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:425)]-[DEBUG] negotiated cipher suite: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
@@ -288,7 +288,7 @@ main, setSoTimeout(3000) called
 </code></pre><p>线索断了之后，只能通过抓包的方式看看究竟发生了什么。这里要出现今天讲的主角wireshark，通过这个强大的工具进行抓包，增加ip和ssl的filter （ip.addr==xxx.yy.zzz.80 and ssl）之后可以看到与目标地址的通讯包。但是，由于是https，包中的流量是加密的，并不能进行分析。于是，如何解密抓取的https流量成为关键。</p>
 <p>解密之前，首先要了解https的基本流程。这个网上有很多描述详细的文章，这边就不赘述。简单说一下，加密是通过指定的加密方法，结合客户端与服务端之间交换的两个随机数，再加上客户端用服务端提供证书上的public key加密的pre-master这个参数（外界是不知道这个参数的，这个参数由客户端生成，经过公钥加密后，只有服务端知道这个参数是什么），生成一个对称加密密钥。在握手结束后，客户端和服务端之间的通讯流量是采用对称加密算法来加密的，而加密的密钥是有握手阶段交换的随机数random_1，random_2以及pre-master和指定的加密算法生成的。这个过程中，最重要的一个参数就是pre-master，其他的参数都是可以通过抓包得到的。因此，如果能够拿到这个pre-master，那么就可以解密wireshark抓取的https流量。</p>
 <p>在前面所说的场景中，我们是客户端，无法知道服务端提供证书的私钥，因此不能从wireshark抓取的包中解密来获得pre-master。但是，我们在代码中所做的请求是通过Apache提供的httpclient完成的，可以在启动时添加vmoption参数-Djavax.net.debug=ssl,keygen来获得tls连接中的一些重要参数。下面是建立连接过程中打印出的部分参数</p>
-<pre><code>*** ECDH ServerKeyExchange
+<pre tabindex="0"><code>*** ECDH ServerKeyExchange
 Signature Algorithm SHA512withRSA
 Server key: Sun EC public key, 256 bits
 public x coord: 82734322831099238985881665140172758067838155879895358323075425906443044790736
@@ -342,7 +342,7 @@ Server write IV:
 0000: 15 62 81 55 .b.U
 </code></pre><p>这里我们所要的pre-master就是Clinent Nounce , Master Secret hex值的组合，最后的把它们存在一个sslkey.log文件中，格式如下（手动操作很简单，也可以参考一个python脚本来操作）</p>
 <p>CLIENT_RANDOM 5E731E001D49FA112BAF6B0CFFD8EF5C15DF90B27AE6516DFB83FBA484875ECD 1E53B5AFA6925E8E6B594F48C0BCAF64FDCDE60CA2610EBF6693065A4929E096E8287F9172C1D91CCC8134D2DB1370B4</p>
-<pre><code>##!/usr/bin/env python
+<pre tabindex="0"><code>##!/usr/bin/env python
 import re
 import sys
 
@@ -385,7 +385,7 @@ if __name__ == '__main__':
     sys.exit(main())
 </code></pre><p>获得了这个重要的pre-master参数后，就可以在wireshark中指定tls的pre-master-secret 文件的名字，于是可以解密https流量。</p>
 <p>回归到要解决的问题，可以发现报出了这样的错误：</p>
-<pre><code>Frame 84: 538 bytes on wire (4304 bits), 538 bytes captured (4304 bits) on interface \Device\NPF_{1E884C5A-1654-4DF6-A7E8-01A37930B33B}, id 0
+<pre tabindex="0"><code>Frame 84: 538 bytes on wire (4304 bits), 538 bytes captured (4304 bits) on interface \Device\NPF_{1E884C5A-1654-4DF6-A7E8-01A37930B33B}, id 0
 Ethernet II, Src: a2:39:20:00:08:00 (a2:39:20:00:08:00), Dst: 0f:00:08:00:00:00 (0f:00:08:00:00:00)
 Internet Protocol Version 4, Src: xxx.yy.zzz.80, Dst: aa.bb.cc.dd
 Transmission Control Protocol, Src Port: 443, Dst Port: 63636, Seq: 4343, Ack: 1042, Len: 484
@@ -452,9 +452,9 @@ Error: SerializationException: Type definitions should start with a '{', expecti
 
         
     <div class="updated-badge-container">
-        <span title="Updated @ 2020-08-31 16:03:57 CST" style="cursor:help">
+        <span title="Updated @ 2021-12-31 17:40:56 CST" style="cursor:help">
 
-<svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2020-08-31</text><text x="915" y="140" textLength="650" transform="scale(.1)">2020-08-31</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2021-12-31</text><text x="915" y="140" textLength="650" transform="scale(.1)">2021-12-31</text></g></svg>
         </span></div>
 
 
@@ -623,7 +623,7 @@ Error: SerializationException: Type definitions should start with a '{', expecti
             
     <footer id="footer" class="footer">
         <div class="footer-inner">
-            <div class="site-info">©&nbsp;2019–2020&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;lsongseven</div><div class="powered-by">Powered by <a href="https://github.com/gohugoio/hugo" target="_blank" rel="noopener">Hugo</a> | Theme is <a href="https://github.com/reuixiy/hugo-theme-meme" target="_blank" rel="noopener">MemE</a></div><div class="site-copyright"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a></div>
+            <div class="site-info">©&nbsp;2019–2021&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;lsongseven</div><div class="powered-by">Powered by <a href="https://github.com/gohugoio/hugo" target="_blank" rel="noopener">Hugo</a> | Theme is <a href="https://github.com/reuixiy/hugo-theme-meme" target="_blank" rel="noopener">MemE</a></div><div class="site-copyright"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a></div>
 
             
     

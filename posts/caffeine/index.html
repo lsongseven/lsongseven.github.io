@@ -3,7 +3,7 @@
     <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
     <meta charset="UTF-8" />
 
-    <meta name="generator" content="Hugo 0.74.3" /><meta name="theme-color" content="#fff" />
+    <meta name="generator" content="Hugo 0.91.2" /><meta name="theme-color" content="#fff" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
@@ -18,7 +18,7 @@
 
     
     
-        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.8a3d91a0c9adf6cf6ac56419ca32b2a2717052ce9ed7b7e3ba5da59b8ab9a8f9.js" integrity="sha256-ij2RoMmt9s9qxWQZyjKyonFwUs6e17fjul2lm4q5qPk="></script>
+        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.c7f21e9bef4b65c0fb001e85133740e15b56e4bc358804fd56b2462a49b94d1a.js" integrity="sha256-x/Iem&#43;9LZcD7AB6FEzdA4VtW5Lw1iAT9VrJGKkm5TRo="></script>
 
     
 
@@ -64,7 +64,7 @@ Expiration Policy caffeine中的过期策略有两种，分别是fixed expiratio
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "datePublished": "2020-06-23T17:47:55+08:00",
-        "dateModified": "2020-08-31T16:04:54+08:00",
+        "dateModified": "2021-12-31T17:40:56+08:00",
         "url": "https://lsongseven.github.io/posts/caffeine/",
         "headline": "Caffeine内存缓存",
         "description": "Eviction Policy 在caffeine中缓存的管理使用的是Window TinyLFU(W-TinyLFU)的技术，结构如下图\n先来解释一下各个部分：\nwindow cache（绿色部分）: 新对象存入的区域；考虑到缓存的驱逐策略是基于类似LFU的粗略，这里的window cache是对新加入对象的一个保护策略，这些对象会现在window cache中呆一段时间，然后累积一定的frequency之后（LRU策略将其淘汰的时候）才会到TinyLFU中与其他缓存进行frequency的battle，决定去留； main cache （红色和蓝色部分）：大部分缓存所在的区域； TinyLFU (紫色部分，一个admission filter）：当window cache空间存满之后，来自window cache区域的victim将会和来自main cache区域的victim进行比较，判断二者出现频率的大小，如果前者更大，那么将会将前者插入main cache，淘汰掉后者；反之，淘汰掉前者；\n下面这个图可以更好的帮助了解Window TinyLFU的过程\n在caffeine中，window cache所占大小约为总cache大小的1%，这是一个调参之后的结果，Window TinyLFU的作者做过大量实验证明在大多数的情况下1%能够实现缓存的最大命中率。\n在TinyLFU中，使用count min sketch的方式来进行频率的估算，所谓count min sketch，就是利用多个哈希函数来对某个对象的频率进行计数，然后在计算这个对象的频率时，选择最小的哈希函数的计数值最为他的频率（这里可以考虑一种在单一哈希函数下的一个场景，如果有一个热键，他出现的频率很高，哈希之后的键位h1，然后又有一个很冷的键，出现的频率很低，然而由于哈希函数的碰撞其哈希之后的键也为h1，那么这就会造成很难淘汰这个冷键。这里采用多个哈希函数可以很好的规避这种情况）。\ncount min sketch的结构如下图：\n在TinyLFU中，为了使缓存能够有一定的“鲜活性”，在每一次access的时候都会将缓存技术乘以一个aging factor（默认为2），这样的一个操作被称为“Reset”。这样做的好处是可以规避掉历史的“惯性”，举个例子，比如在视频网站上之前一个很火的剧，被点击了上亿次，如果不加以aging的措施的话，可能会一直霸榜，这不是我们希望看到的。\n下面再来说一下main cache部分，采用的是Segmented LRU策略，即SLRU。其中会有两个部分：\nprotected，这部分的对象比较安全，但是如果protected队列满了之后会将lru淘汰入probation队列。 probation，这部分的对象较为危险，如果probation队列满了之后会淘汰lru的对象，但是如果这部分中的对象又再次被访问之后此对象会升级进入protected队列。\nExpiration Policy caffeine中的过期策略有两种，分别是fixed expiration policy和variable expiration policy，下面进行简单介绍。",
@@ -126,7 +126,7 @@ Expiration Policy caffeine中的过期策略有两种，分别是fixed expiratio
 <meta property="og:locale" content="en" /><meta property="og:image" content="https://lsongseven.github.io/image/caffeine/caffeine.png" />
 <meta property="og:type" content="article" />
     <meta property="article:published_time" content="2020-06-23T17:47:55&#43;08:00" />
-    <meta property="article:modified_time" content="2020-08-31T16:04:54&#43;08:00" />
+    <meta property="article:modified_time" content="2021-12-31T17:40:56&#43;08:00" />
     
     <meta property="article:section" content="posts" />
 
@@ -343,9 +343,9 @@ probation，这部分的对象较为危险，如果probation队列满了之后�
 
         
     <div class="updated-badge-container">
-        <span title="Updated @ 2020-08-31 16:04:54 CST" style="cursor:help">
+        <span title="Updated @ 2021-12-31 17:40:56 CST" style="cursor:help">
 
-<svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2020-08-31</text><text x="915" y="140" textLength="650" transform="scale(.1)">2020-08-31</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2021-12-31</text><text x="915" y="140" textLength="650" transform="scale(.1)">2021-12-31</text></g></svg>
         </span></div>
 
 
@@ -518,7 +518,7 @@ probation，这部分的对象较为危险，如果probation队列满了之后�
             
     <footer id="footer" class="footer">
         <div class="footer-inner">
-            <div class="site-info">©&nbsp;2019–2020&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;lsongseven</div><div class="powered-by">Powered by <a href="https://github.com/gohugoio/hugo" target="_blank" rel="noopener">Hugo</a> | Theme is <a href="https://github.com/reuixiy/hugo-theme-meme" target="_blank" rel="noopener">MemE</a></div><div class="site-copyright"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a></div>
+            <div class="site-info">©&nbsp;2019–2021&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;lsongseven</div><div class="powered-by">Powered by <a href="https://github.com/gohugoio/hugo" target="_blank" rel="noopener">Hugo</a> | Theme is <a href="https://github.com/reuixiy/hugo-theme-meme" target="_blank" rel="noopener">MemE</a></div><div class="site-copyright"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a></div>
 
             
     

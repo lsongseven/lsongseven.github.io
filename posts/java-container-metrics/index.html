@@ -3,7 +3,7 @@
     <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
     <meta charset="UTF-8" />
 
-    <meta name="generator" content="Hugo 0.74.3" /><meta name="theme-color" content="#fff" />
+    <meta name="generator" content="Hugo 0.91.2" /><meta name="theme-color" content="#fff" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
@@ -18,7 +18,7 @@
 
     
     
-        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.8a3d91a0c9adf6cf6ac56419ca32b2a2717052ce9ed7b7e3ba5da59b8ab9a8f9.js" integrity="sha256-ij2RoMmt9s9qxWQZyjKyonFwUs6e17fjul2lm4q5qPk="></script>
+        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.c7f21e9bef4b65c0fb001e85133740e15b56e4bc358804fd56b2462a49b94d1a.js" integrity="sha256-x/Iem&#43;9LZcD7AB6FEzdA4VtW5Lw1iAT9VrJGKkm5TRo="></script>
 
     
 
@@ -59,7 +59,7 @@ container_memory_usage_bytes == container_memory_rss &#43; container_memory_cach
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "datePublished": "2020-08-21T19:52:30+08:00",
-        "dateModified": "2020-08-31T16:04:33+08:00",
+        "dateModified": "2021-12-31T17:40:56+08:00",
         "url": "https://lsongseven.github.io/posts/java-container-metrics/",
         "headline": "Java进程容器内存监控指标",
         "description": "以container_memory_usage_bytes作为memory指标 过去的一段时间内，xxx服务在prometheus上面用来监控内存的指标是以容器内存使用量（率）来衡量的，如下：\ncontainer_memory_usage_bytes{pod=~\"xxx.*-[^-]*-[^-]*$\", image!=\"\", container!=\"POD\"}*100/container_spec_memory_limit_bytes{pod=~\"xxx.*-[^-]*-[^-]*$\", image!=\"\", container!=\"POD\"} \u003e 80.0 xxx服务在kubernetes中的资源配置情况如下，\nresources: limits: cpu: \"2\" memory: \"4Gi\" requests: cpu: \"100m\" memory: \"512Mi\" 在这样的配置下，上面监控rule的语义就是，当容器内使用内存量达到容器最大内存（4G）的80%时发出告警。\n再来看下container_memory_usage_bytes如何定义，在cadvisor上面一个issue中提到：\ncontainer_memory_usage_bytes == container_memory_rss + container_memory_cache + container_memory_swap + kernel memory(issue中提到这里的kernel memory还未被暴露为metrics).\n看到rss, swap, cache这些指标很自然的就想到top，在top中也有一个指标叫做used，其定义为 ：“USED - simply the sum of RES and SWAP”, https://man7.",
@@ -115,7 +115,7 @@ container_memory_usage_bytes == container_memory_rss &#43; container_memory_cach
 <meta property="og:locale" content="en" /><meta property="og:image" content="https://lsongseven.github.io/icons/apple-touch-icon.png" />
     <meta property="og:type" content="article" />
     <meta property="article:published_time" content="2020-08-21T19:52:30&#43;08:00" />
-    <meta property="article:modified_time" content="2020-08-31T16:04:33&#43;08:00" />
+    <meta property="article:modified_time" content="2021-12-31T17:40:56&#43;08:00" />
     
     <meta property="article:section" content="posts" />
 
@@ -278,9 +278,9 @@ container_memory_usage_bytes == container_memory_rss &#43; container_memory_cach
             <div class="post-body">
               <h1 id="以container_memory_usage_bytes作为memory指标"><a href="#以container_memory_usage_bytes作为memory指标" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>以container_memory_usage_bytes作为memory指标</h1>
 <p style="text-indent:0"><span class="drop-cap">过</span>去的一段时间内，xxx服务在prometheus上面用来监控内存的指标是以容器内存使用量（率）来衡量的，如下：</p>
-<pre><code>container_memory_usage_bytes{pod=~&quot;xxx.*-[^-]*-[^-]*$&quot;, image!=&quot;&quot;, container!=&quot;POD&quot;}*100/container_spec_memory_limit_bytes{pod=~&quot;xxx.*-[^-]*-[^-]*$&quot;, image!=&quot;&quot;, container!=&quot;POD&quot;} &gt; 80.0
+<pre tabindex="0"><code>container_memory_usage_bytes{pod=~&quot;xxx.*-[^-]*-[^-]*$&quot;, image!=&quot;&quot;, container!=&quot;POD&quot;}*100/container_spec_memory_limit_bytes{pod=~&quot;xxx.*-[^-]*-[^-]*$&quot;, image!=&quot;&quot;, container!=&quot;POD&quot;} &gt; 80.0
 </code></pre><p>xxx服务在kubernetes中的资源配置情况如下，</p>
-<pre><code>resources:
+<pre tabindex="0"><code>resources:
   limits:
     cpu: &quot;2&quot;
     memory: &quot;4Gi&quot;
@@ -294,7 +294,7 @@ container_memory_usage_bytes == container_memory_rss &#43; container_memory_cach
 <h1 id="以container_memory_usage_bytes作为java容器内存指标的问题"><a href="#以container_memory_usage_bytes作为java容器内存指标的问题" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>以container_memory_usage_bytes作为java容器内存指标的问题</h1>
 <h2 id="频繁告警"><a href="#频繁告警" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>频繁告警</h2>
 <p>某刻xxx服务中某个pod中top指标如下</p>
-<pre><code>top - 05:35:43 up 7 days, 21:32,  0 users,  load average: 11.99, 11.35, 8.50
+<pre tabindex="0"><code>top - 05:35:43 up 7 days, 21:32,  0 users,  load average: 11.99, 11.35, 8.50
 Tasks:  10 total,   1 running,   9 sleeping,   0 stopped,   0 zombie
 %Cpu(s):  6.7 us,  6.5 sy,  0.0 ni, 85.9 id,  0.3 wa,  0.0 hi,  0.7 si,  0.0 st
 KiB Mem : 65960736 total,  7194880 free, 42443524 used, 16322332 buff/cache
@@ -316,7 +316,7 @@ KiB Swap:        0 total,        0 free,        0 used. 19621872 avail Mem
 <h2 id="jvm指标"><a href="#jvm指标" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>JVM指标</h2>
 <p>既然是java进程常驻内存很高，那么首先怀疑的就是jvm内存占用问题。</p>
 <p>看一下堆内存，jmap -heap 9，发现很健康</p>
-<pre><code>Heap Configuration:
+<pre tabindex="0"><code>Heap Configuration:
    MinHeapFreeRatio         = 40
    MaxHeapFreeRatio         = 70
    MaxHeapSize              = 3221225472 (3072.0MB)
@@ -354,9 +354,9 @@ PS Old Generation
    free     = 2003888032 (1911.0565490722656MB)
    6.68669193983078% used
 </code></pre><p>不信邪手动gc一下，发现RES并没有什么变化。</p>
-<pre><code>jcmd 9 GC.run
+<pre tabindex="0"><code>jcmd 9 GC.run
 </code></pre><p>到这里可以明白堆内内存没有什么问题，下一个怀疑对象是堆外内存。启动参数上加上-XX:NativeMemoryTracking=summary，然后jcmd 9 VM.native_memory summary scale=MB看一下发现依然很健康（虽然加上参数容器会重启，但下面数据也是在频繁告警的情况下获得的）</p>
-<pre><code>Native Memory Tracking:
+<pre tabindex="0"><code>Native Memory Tracking:
 
 Total: reserved=5261MB, committed=4124MB
 -                 Java Heap (reserved=3072MB, committed=3072MB)
@@ -402,9 +402,9 @@ Total: reserved=5261MB, committed=4124MB
 在我们应用中没有发生swap，所以造成告警的原因主要是java进程的RES很大；
 java进程内部堆内内存和堆外内存很健康，没有看到大量占用内存的迹象；
 不得不说top是一个很强大的工具，但是他也有很多的诟病，尤其是对于java进程来说，下面摘录一些国外开发者的抱怨：</p>
-<p><em>&quot;It really annoys me that there&rsquo;s no good tool for measuring memory usage on Linux. There are tools, like &lsquo;top&rsquo;, but they often cause more harm than good - most people don&rsquo;t even know what the fields really mean and only few people can interpret them correctly. Mind you, even I&rsquo;m not sure I can, and in fact I sometimes doubt such person even exists. The problem is, even intepreting the numbers may not give the answer. Measuring memory usage on Linux is voodoo magic.&ldquo;</em><br>
+<p><em>&ldquo;It really annoys me that there&rsquo;s no good tool for measuring memory usage on Linux. There are tools, like &lsquo;top&rsquo;, but they often cause more harm than good - most people don&rsquo;t even know what the fields really mean and only few people can interpret them correctly. Mind you, even I&rsquo;m not sure I can, and in fact I sometimes doubt such person even exists. The problem is, even intepreting the numbers may not give the answer. Measuring memory usage on Linux is voodoo magic.&quot;</em><br>
 &ndash; from <a href="https://blogs.kde.org/node/1445" target="_blank" rel="noopener">https://blogs.kde.org/node/1445</a></p>
-<p><em>&quot;This has been a long-standing complaint with Java, but it&rsquo;s largely meaningless&hellip;With a Java program, it&rsquo;s far more important to pay attention to what&rsquo;s happening in the heap. The total amount of space consumed is important, and there are some steps that you can take to reduce that. More important is the amount of time that you spend in garbage collection, and which parts of the heap are getting collected.&ldquo;</em><br>
+<p><em>&ldquo;This has been a long-standing complaint with Java, but it&rsquo;s largely meaningless&hellip;With a Java program, it&rsquo;s far more important to pay attention to what&rsquo;s happening in the heap. The total amount of space consumed is important, and there are some steps that you can take to reduce that. More important is the amount of time that you spend in garbage collection, and which parts of the heap are getting collected.&quot;</em><br>
 &ndash; from <a href="https://stackoverflow.com/questions/561245/virtual-memory-usage-from-java-under-linux-too-much-memory-used" target="_blank" rel="noopener">https://stackoverflow.com/questions/561245/virtual-memory-usage-from-java-under-linux-too-much-memory-used</a></p>
 <p>最后的观点就是，对于java进程来说，我们的关注点不应该是RES，而应该将目光转向heap。查阅很多资料后，能找到的关于这个现象下RES高的最贴切的解释是下面的一段话：</p>
 <p><b>When is Resident Set Size Important?</b></p>
@@ -441,9 +441,9 @@ java进程内部堆内内存和堆外内存很健康，没有看到大量占用�
 
         
     <div class="updated-badge-container">
-        <span title="Updated @ 2020-08-31 16:04:33 CST" style="cursor:help">
+        <span title="Updated @ 2021-12-31 17:40:56 CST" style="cursor:help">
 
-<svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2020-08-31</text><text x="915" y="140" textLength="650" transform="scale(.1)">2020-08-31</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2021-12-31</text><text x="915" y="140" textLength="650" transform="scale(.1)">2021-12-31</text></g></svg>
         </span></div>
 
 
@@ -555,6 +555,10 @@ java进程内部堆内内存和堆外内存很健康，没有看到大量占用�
     
         <ul class="post-nav">
             
+                <li class="post-nav-prev">
+                    <a href="/posts/antlr4/" rel="prev">&lt; 基于antlr4构建规则引擎简介</a>
+                </li>
+            
             
                 <li class="post-nav-next">
                     <a href="/posts/shutdownhook/" rel="next">如何在kubernetes中优雅停机 &gt;</a>
@@ -612,7 +616,7 @@ java进程内部堆内内存和堆外内存很健康，没有看到大量占用�
             
     <footer id="footer" class="footer">
         <div class="footer-inner">
-            <div class="site-info">©&nbsp;2019–2020&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;lsongseven</div><div class="powered-by">Powered by <a href="https://github.com/gohugoio/hugo" target="_blank" rel="noopener">Hugo</a> | Theme is <a href="https://github.com/reuixiy/hugo-theme-meme" target="_blank" rel="noopener">MemE</a></div><div class="site-copyright"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a></div>
+            <div class="site-info">©&nbsp;2019–2021&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;lsongseven</div><div class="powered-by">Powered by <a href="https://github.com/gohugoio/hugo" target="_blank" rel="noopener">Hugo</a> | Theme is <a href="https://github.com/reuixiy/hugo-theme-meme" target="_blank" rel="noopener">MemE</a></div><div class="site-copyright"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a></div>
 
             
     
