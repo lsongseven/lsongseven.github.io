@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
     <title type="text">Blog of Tinys</title>
     <subtitle type="html">MemE is a powerful and highly customizable GoHugo theme for personal blogs.</subtitle>
-    <updated>2022-01-04T17:41:23&#43;08:00</updated>
+    <updated>2022-01-10T13:43:36&#43;08:00</updated>
     <id>https://lsongseven.github.io/</id>
     <link rel="alternate" type="text/html" href="https://lsongseven.github.io/" />
     <link rel="self" type="application/atom&#43;xml" href="https://lsongseven.github.io/atom.xml" />
@@ -28,10 +28,7 @@
                     <email>lsongseven@gmail.com</email>
                     </author>
             <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)</rights><summary type="html">基于antlr4构建规则引擎简介 1.什么是antlr ANTLR (ANother Tool for Language Recognition) 是一个强大的文本或者二进制文件解析工具，被广泛应用于构建语法以及各种工具和框架。如
- Twitter&amp;rsquo;s search query language MySQL Workbench Hibernate Trino (SQL query engine) &amp;hellip;  antlr可以对某一种语言描述，根据对应的语法，生成一颗语法树，在这颗语法树中包含了语言描述与对应语法规则的关系。当你去遍历这颗语法树时，可以灵活处理遍历前和遍历后的规则，实现某种效果。（可以理解为根据一组确定的语法规则，处理一段数据，如实现某种声明、运算、调用等，从而得到某种结果）
-antlr最新的大版本是v4，了解相关变更详情可参考 Why do we need ANTLR v4
-2.可以用来做什么 antlr可以用来做各种各样的事情，比如本文要说的基于antlr4构建的规则引擎。 除此之外，还有海量的场景可以用到antlr，比如
- vscode中的插件，基于antlr做语法规则检查 grafana中的查询语法解析 格式转换工具，如json、yaml、xml等互相转换 &amp;hellip;  3.用antlr4实现类golang语法解析器的规则引擎 最近在研究规则引擎相关的实现，g社上发现一个bilibili的开源项目gengine，基于antlr4实现了类golang的语法解析器，下面我们来以gengine为例看一下如何基于antlr4实现这个事情。</summary>
+ Twitter&amp;rsquo;s search query language MySQL Workbench Hibernate Trino (SQL query engine) &amp;hellip;  antlr可以对某一种语言描述，根据对应的语法，生成一颗语法树，在这颗语法树中包含了语言描述与对应语法规则的关系。当你去遍历这颗语法树时，可以灵活处理遍历前和遍历后的规则，实现某种效果。（可以理解为根据一组确定的语法规则，处理一段数据，如实现某种声明、运算、调用等，从而得到某种结果）</summary>
             
                 <content type="html">&lt;h1 id=&#34;基于antlr4构建规则引擎简介&#34;&gt;基于antlr4构建规则引擎简介&lt;/h1&gt;
 &lt;h2 id=&#34;1什么是antlr&#34;&gt;1.什么是antlr&lt;/h2&gt;
@@ -490,6 +487,371 @@ $ antlr4 -Dlanguage&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;Go -o parser geng
         </entry>
     
         <entry>
+            <title type="text">Distributed Tracing System</title>
+            <link rel="alternate" type="text/html" href="https://lsongseven.github.io/posts/distributed-tracing-system/" />
+            <id>https://lsongseven.github.io/posts/distributed-tracing-system/</id>
+            <updated>2022-01-10T13:39:42&#43;08:00</updated>
+            <published>2021-09-03T17:47:55&#43;08:00</published>
+            <author>
+                    <name>lsongseven</name>
+                    <uri>https://github.com/lsongseven</uri>
+                    <email>lsongseven@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)</rights><summary type="html">Distributed Tracing System Preface  Trace有什么用  从最早期的巨石单体（Monolithic）到分布式（Distributed），再到微服务（Microservices）、容器化（Containerization）、容器编排（Container Orchestration），最后到服务网格（Service Mesh）、无服务器（Serverless）,复杂度不断提升，问题定位越来越复杂
+ Trace可以快速定位问题 + 理清网络拓扑  OpenTracing OpenTracing是业务、框架等代码与分布式追踪实现厂商（如jaeger、zipkin、skywalking）之间的一层标准层。OpenTracing通过提供平台无关、厂商无关的API，使得开发人员能够方便的添加（或更换）追踪系统的实现。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17  +-------------+ +---------+ +----------+ +------------+ | Application | | Library | | OSS | | RPC/IPC | | Code | | Code | | Services | | Frameworks | +-------------+ +---------+ +----------+ +------------+ | | | | | | | | v v v v +-----------------------------------------------------+ | · · · · · · · · · · OpenTracing · · · · · · · · · · | +-----------------------------------------------------+ | | | | | | | | v v v v +-----------+ +-------------+ +-------------+ +-----------+ | Tracing | | Logging | | Metrics | | Tracing | | System A | | Framework B | | Framework C | | System D | +-----------+ +-------------+ +-------------+ +-----------+    Terminology: Trace, Span  一个trace代表一个潜在的，分布式的，存在并行数据或并行执行轨迹（潜在的分布式、并行）的系统。Trace由Span组成，可以看作是一个由Span组成的有向无环图(Directed Acyclic Graph)， Span之间的边被称为Refrence。</summary>
+            
+                <content type="html">&lt;h1 id=&#34;distributed-tracing-system&#34;&gt;Distributed Tracing System&lt;/h1&gt;
+&lt;h2 id=&#34;preface&#34;&gt;Preface&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Trace有什么用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;从最早期的巨石单体（Monolithic）到分布式（Distributed），再到微服务（Microservices）、容器化（Containerization）、容器编排（Container Orchestration），最后到服务网格（&lt;a href=&#34;https://www.servicemesher.com/istio-handbook/GLOSSARY.html#service-mesh&#34;&gt;Service Mesh&lt;/a&gt;）、无服务器（Serverless）,复杂度不断提升，问题定位越来越复杂&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lsongseven.github.io/image/jaeger/topology.png&#34; alt=&#34;Generated&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Trace可以快速定位问题 + 理清网络拓扑&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;opentracing&#34;&gt;OpenTracing&lt;/h2&gt;
+&lt;p&gt;OpenTracing是业务、框架等代码与分布式追踪实现厂商（如jaeger、zipkin、skywalking）之间的一层标准层。OpenTracing通过提供平台无关、厂商无关的API，使得开发人员能够方便的添加（或更换）追踪系统的实现。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;   +-------------+  +---------+  +----------+  +------------+
+   | Application |  | Library |  |   OSS    |  |  RPC/IPC   |
+   |    Code     |  |  Code   |  | Services |  | Frameworks |
+   +-------------+  +---------+  +----------+  +------------+
+          |              |             |             |
+          |              |             |             |
+          v              v             v             v
+     +-----------------------------------------------------+
+     | · · · · · · · · · · OpenTracing · · · · · · · · · · |
+     +-----------------------------------------------------+
+       |               |                |               |
+       |               |                |               |
+       v               v                v               v
+ +-----------+  +-------------+  +-------------+  +-----------+
+ |  Tracing  |  |   Logging   |  |   Metrics   |  |  Tracing  |
+ | System A  |  | Framework B |  | Framework C |  | System D  |
+ +-----------+  +-------------+  +-------------+  +-----------+
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;Terminology: Trace, Span&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一个trace代表一个潜在的，分布式的，存在并行数据或并行执行轨迹（潜在的分布式、并行）的系统。Trace由Span组成，可以看作是一个由Span组成的有向无环图(Directed Acyclic Graph)， Span之间的边被称为Refrence。&lt;/p&gt;
+&lt;p&gt;一个Span代表系统中具有开始时间和执行时长的逻辑运行单元。Span之间通过嵌套或者顺序排列建立逻辑因果关系。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Span之间的关系&lt;/li&gt;
+&lt;li&gt;ChildOf : 一个span可能是一个父级span的孩子，即&amp;quot;ChildOf&amp;quot;关系。在&amp;quot;ChildOf&amp;quot;引用关系下，父级span某种程度上取决于子span。&lt;/li&gt;
+&lt;li&gt;FollowsFrom: 一些父级节点不以任何方式依然他们子节点的执行结果，这种情况下，我们说这些子span和父span之间是&amp;quot;FollowsFrom&amp;quot;的因果关系。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;Causal relationships between Spans in a single Trace
+
+
+        [Span A]  ←←←(the root span)
+            |
+     +------+------+
+     |             |
+ [Span B]      [Span C] ←←←(Span C is a `ChildOf` Span A)
+     |             |
+ [Span D]      +---+-------+
+               |           |
+           [Span E]    [Span F] &amp;gt;&amp;gt;&amp;gt; [Span G] &amp;gt;&amp;gt;&amp;gt; [Span H]
+                                       ↑
+                                       ↑
+                                       ↑
+                         (Span G `FollowsFrom` Span F)
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;Temporal relationships between Spans in a single Trace
+
+
+––|–––––––|–––––––|–––––––|–––––––|–––––––|–––––––|–––––––|–&amp;gt; time
+
+ [Span A···················································]
+   [Span B··············································]
+      [Span D··········································]
+    [Span C········································]
+         [Span E·······]        [Span F··] [Span G··] [Span H··]
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;OpenTracing中Span的定义包括
+&lt;ul&gt;
+&lt;li&gt;操作的名称&lt;/li&gt;
+&lt;li&gt;开始时间戳&lt;/li&gt;
+&lt;li&gt;结束时间戳&lt;/li&gt;
+&lt;li&gt;Span Tags&lt;/li&gt;
+&lt;li&gt;Span Logs&lt;/li&gt;
+&lt;li&gt;SpanContext
+&lt;ul&gt;
+&lt;li&gt;每个span必须提供方法访问SpanContext，包含&amp;lt;trace_id, span_id, sampled&amp;gt;元组&lt;/li&gt;
+&lt;li&gt;跨越进程依赖于OpenTracing的Inject/Extract&lt;/li&gt;
+&lt;li&gt;跨越进程边界，封装Baggage Items&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Baggage Item
+&lt;ul&gt;
+&lt;li&gt;Baggage是存储在SpanContext中的一个键值对(SpanContext)集合。它会在一条追踪链路上的所有Span内&lt;em&gt;全局&lt;/em&gt;传输，包含这些Span对应的SpanContexts&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;与此Span相关联的其他Span的引用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;传递上下文的一个案例&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+    &lt;span class=&#34;s&#34;&gt;&amp;#34;net/http&amp;#34;&lt;/span&gt;
+
+    &lt;span class=&#34;nx&#34;&gt;opentracing&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;github.com/opentracing/opentracing-go&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;s&#34;&gt;&amp;#34;github.com/opentracing/opentracing-go/ext&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;
+
+&lt;span class=&#34;nx&#34;&gt;tracer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;opentracing&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;GlobalTracer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+
+&lt;span class=&#34;nx&#34;&gt;clientSpan&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;tracer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;StartSpan&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;client&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;defer&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;clientSpan&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Finish&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+
+&lt;span class=&#34;nx&#34;&gt;url&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;http://localhost:8082/publish&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;req&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;http&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;NewRequest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;GET&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;// Set some tags on the clientSpan to annotate that it&amp;#39;s the client span. The additional HTTP tags are useful for debugging purposes.
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;SpanKindRPCClient&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Set&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;clientSpan&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;ext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;HTTPUrl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Set&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;clientSpan&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;ext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;HTTPMethod&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Set&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;clientSpan&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;GET&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;// Inject the client span context into the headers
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;tracer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Inject&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;clientSpan&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(),&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;opentracing&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;HTTPHeaders&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;opentracing&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;HTTPHeadersCarrier&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;req&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Header&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;nx&#34;&gt;resp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;http&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;DefaultClient&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Do&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;req&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+    &lt;span class=&#34;s&#34;&gt;&amp;#34;log&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;s&#34;&gt;&amp;#34;net/http&amp;#34;&lt;/span&gt;
+
+    &lt;span class=&#34;nx&#34;&gt;opentracing&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;github.com/opentracing/opentracing-go&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;s&#34;&gt;&amp;#34;github.com/opentracing/opentracing-go/ext&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+
+    &lt;span class=&#34;c1&#34;&gt;// Tracer initialization, etc.
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;
+
+    &lt;span class=&#34;nx&#34;&gt;http&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;HandleFunc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;/publish&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;w&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;http&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;http&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Request&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// Extract the context from the headers
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;nx&#34;&gt;spanCtx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;tracer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Extract&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;opentracing&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;HTTPHeaders&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;opentracing&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;HTTPHeadersCarrier&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Header&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+        &lt;span class=&#34;nx&#34;&gt;serverSpan&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;tracer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;StartSpan&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;server&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;RPCServerOption&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;spanCtx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;defer&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;serverSpan&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Finish&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;})&lt;/span&gt;
+
+    &lt;span class=&#34;nx&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Fatal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;http&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;ListenAndServe&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;:8082&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;jaeger-vs-skywalking&#34;&gt;Jaeger vs. Skywalking&lt;/h2&gt;
+&lt;h3 id=&#34;architecture&#34;&gt;Architecture&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;https://lsongseven.github.io/image/jaeger/jaeger-arch.png&#34; alt=&#34;Generated&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lsongseven.github.io/image/jaeger/jaeger-arch-with-kafka.png&#34; alt=&#34;Generated&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Client: 实现了OpenTracing API的客户端，用于增强业务代码。&lt;/li&gt;
+&lt;li&gt;Agent: 监听UDP发来的Span数据，可部署为sidecar或者DaemonSet，屏蔽client与collector之间的路由和服务发现细节&lt;/li&gt;
+&lt;li&gt;Collector 将采集到的 trace 数据写入中间缓冲区 Kafka 中，Ingester 读取 Kafka 中的数据并持久化到 DB 里。同时，Flink jobs 持续读取 Kafka 中的数据并将计算出的拓扑关系写入 DB 中。&lt;/li&gt;
+&lt;li&gt;Sampling: Constant, Probabilistic, Rate Limiting, Remote&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://lsongseven.github.io/image/jaeger/skywalking-arch.png&#34; alt=&#34;Generated&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Observability Analysis Platform (OAP)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://skywalking.apache.org/docs/main/latest/en/faq/why_mq_not_involved/#why-doesnt-skywalking-involve-mq-in-its-architecture&#34;&gt;[*] why doesn&amp;rsquo;t skywalking involve mq in its architecture&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;enhancement&#34;&gt;Enhancement&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;skywalking&lt;/li&gt;
+&lt;li&gt;依靠字节码增强技术，可依赖一个agent类来实现特定的增强。这个agent类需要实现void premain(String agentArgs, Instrumentation instrumentation)这样一个方法，具体的增强细节涵盖在其中。（Java中广泛使用的技术，如rpc框架dubbo、诊断工具arthas等）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// java -javaagent:xxx.jar -jar yy.jar
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt;/**
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt; * The main entrance of sky-walking agent, based on javaagent mechanism.
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt; */&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;SkyWalkingAgent&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;cm&#34;&gt;/**
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;     * Main entrance. Use byte-buddy transform to enhance all classes, which define in plugins.
+&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;     */&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;premain&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;agentArgs&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Instrumentation&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;instrumentation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;throws&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PluginException&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+       &lt;span class=&#34;c1&#34;&gt;// instrument
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;       &lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;
+       
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;SDK&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;cloud-native&#34;&gt;Cloud Native&lt;/h2&gt;
+&lt;h2 id=&#34;refrence&#34;&gt;Refrence&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://opentracing.io/docs/&#34;&gt;https://opentracing.io/docs/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://wu-sheng.gitbooks.io/opentracing-io/content/&#34;&gt;https://wu-sheng.gitbooks.io/opentracing-io/content/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://eng.uber.com/distributed-tracing/&#34;&gt;https://eng.uber.com/distributed-tracing/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://medium.com/opentracing/towards-turnkey-distributed-tracing-5f4297d1736&#34;&gt;https://medium.com/opentracing/towards-turnkey-distributed-tracing-5f4297d1736&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+            
+        </entry>
+    
+        <entry>
             <title type="text">Java进程容器内存监控指标</title>
             <link rel="alternate" type="text/html" href="https://lsongseven.github.io/posts/java-container-metrics/" />
             <id>https://lsongseven.github.io/posts/java-container-metrics/</id>
@@ -502,10 +864,7 @@ $ antlr4 -Dlanguage&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;Go -o parser geng
                     </author>
             <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)</rights><summary type="html">以container_memory_usage_bytes作为memory指标 过去的一段时间内，xxx服务在prometheus上面用来监控内存的指标是以容器内存使用量（率）来衡量的，如下：
 container_memory_usage_bytes{pod=~&amp;quot;xxx.*-[^-]*-[^-]*$&amp;quot;, image!=&amp;quot;&amp;quot;, container!=&amp;quot;POD&amp;quot;}*100/container_spec_memory_limit_bytes{pod=~&amp;quot;xxx.*-[^-]*-[^-]*$&amp;quot;, image!=&amp;quot;&amp;quot;, container!=&amp;quot;POD&amp;quot;} &amp;gt; 80.0 xxx服务在kubernetes中的资源配置情况如下，
-resources: limits: cpu: &amp;quot;2&amp;quot; memory: &amp;quot;4Gi&amp;quot; requests: cpu: &amp;quot;100m&amp;quot; memory: &amp;quot;512Mi&amp;quot; 在这样的配置下，上面监控rule的语义就是，当容器内使用内存量达到容器最大内存（4G）的80%时发出告警。
-再来看下container_memory_usage_bytes如何定义，在cadvisor上面一个issue中提到：
-container_memory_usage_bytes == container_memory_rss + container_memory_cache + container_memory_swap + kernel memory(issue中提到这里的kernel memory还未被暴露为metrics).
-看到rss, swap, cache这些指标很自然的就想到top，在top中也有一个指标叫做used，其定义为 ：“USED - simply the sum of RES and SWAP”, https://man7.</summary>
+resources: limits: cpu: &amp;quot;2&amp;quot; memory: &amp;quot;4Gi&amp;quot; requests: cpu: &amp;quot;100m&amp;quot; memory: &amp;quot;512Mi&amp;quot; 在这样的配置下，上面监控rule的语义就是，当容器内使用内存量达到容器最大内存（4G）的80%时发出告警。</summary>
             
                 <content type="html">&lt;h1 id=&#34;以container_memory_usage_bytes作为memory指标&#34;&gt;以container_memory_usage_bytes作为memory指标&lt;/h1&gt;
 &lt;p&gt;过去的一段时间内，xxx服务在prometheus上面用来监控内存的指标是以容器内存使用量（率）来衡量的，如下：&lt;/p&gt;
@@ -675,11 +1034,7 @@ java进程内部堆内内存和堆外内存很健康，没有看到大量占用�
 在公有云情况下，可以先忽略极端情况，云服务商会有一定的保障策略。因此只需要把目光聚集到（1）和（2）两点。 其实可以业界有很多可以参考的例子，比如mysql的redo log和redis的aof都可以一定程度保证在发生问题的时候数据的完整性，但是如果在我们的服务中实现这样的东西太重了，个人认为其实保障数据完整性是一个很通用的需求，应该会有一些开源的项目支持（但是没有找到，不过我认为这是一个赚star的好机会）。
 回到主要问题，考虑到我们的服务都是java的服务，有一种简单的方法可以实现在应用退出的时候优雅停机：使用java提供的shutdown hook来做这个事情（在spring boot中也有类似的东西，通过@PreDestroy注解来实现，不过追到底还是shutdown hook），当jvm收到退出的信号时，调用shutdown hook内的方法，完成清理操作。
 shutdown hook可以保证在应用主动关闭、代码中调用System#exit、OOM、终端Ctrl+C等情况下被调用，对于我们看重的（1）（2）来说，可以很好的解决问题，举个例子增加如下hook：
-Runtime.getRuntime().addShutdownHook(new Thread(() -&amp;gt; System.out.println(&amp;ldquo;shutdown hook!&amp;quot;))); 在退出时会在终端打印出 &amp;ldquo;shutdown hook!&amp;quot;。在实际使用中，可以对将对buffer清理的动作加到hook中，于是可以保证优雅退出。
-可是，这样就完了吗？
-在kubernetes中优雅停机 在本地java -jar xxx.jar运行一个java程序后，通过kill pid这种方式可以完美实现优雅退出，但是到了ecp上，情况并不是这么回事。在每次重新部署的时候，发现并没有触发shutdown hook，问题出在哪里呢？
-这个要从kubernetes中pod关闭说起，参照 https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods
- User sends command to delete Pod, with default grace period (30s) The Pod in the API server is updated with the time beyond which the Pod is considered &amp;ldquo;dead&amp;rdquo; along with the grace period.</summary>
+Runtime.getRuntime().addShutdownHook(new Thread(() -&amp;gt; System.out.println(&amp;ldquo;shutdown hook!&amp;quot;))); 在退出时会在终端打印出 &amp;ldquo;shutdown hook!</summary>
             
                 <content type="html">&lt;h1 id=&#34;优雅退出&#34;&gt;优雅退出&lt;/h1&gt;
 &lt;p&gt;这一篇是为了解决引入buffer后，如何保证数据不丢失？&lt;/p&gt;
@@ -782,15 +1137,7 @@ wait $child
                     </author>
             <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)</rights><summary type="html">Eviction Policy 在caffeine中缓存的管理使用的是Window TinyLFU(W-TinyLFU)的技术，结构如下图
 先来解释一下各个部分：
-window cache（绿色部分）: 新对象存入的区域；考虑到缓存的驱逐策略是基于类似LFU的粗略，这里的window cache是对新加入对象的一个保护策略，这些对象会现在window cache中呆一段时间，然后累积一定的frequency之后（LRU策略将其淘汰的时候）才会到TinyLFU中与其他缓存进行frequency的battle，决定去留； main cache （红色和蓝色部分）：大部分缓存所在的区域； TinyLFU (紫色部分，一个admission filter）：当window cache空间存满之后，来自window cache区域的victim将会和来自main cache区域的victim进行比较，判断二者出现频率的大小，如果前者更大，那么将会将前者插入main cache，淘汰掉后者；反之，淘汰掉前者；
-下面这个图可以更好的帮助了解Window TinyLFU的过程
-在caffeine中，window cache所占大小约为总cache大小的1%，这是一个调参之后的结果，Window TinyLFU的作者做过大量实验证明在大多数的情况下1%能够实现缓存的最大命中率。
-在TinyLFU中，使用count min sketch的方式来进行频率的估算，所谓count min sketch，就是利用多个哈希函数来对某个对象的频率进行计数，然后在计算这个对象的频率时，选择最小的哈希函数的计数值最为他的频率（这里可以考虑一种在单一哈希函数下的一个场景，如果有一个热键，他出现的频率很高，哈希之后的键位h1，然后又有一个很冷的键，出现的频率很低，然而由于哈希函数的碰撞其哈希之后的键也为h1，那么这就会造成很难淘汰这个冷键。这里采用多个哈希函数可以很好的规避这种情况）。
-count min sketch的结构如下图：
-在TinyLFU中，为了使缓存能够有一定的“鲜活性”，在每一次access的时候都会将缓存技术乘以一个aging factor（默认为2），这样的一个操作被称为“Reset”。这样做的好处是可以规避掉历史的“惯性”，举个例子，比如在视频网站上之前一个很火的剧，被点击了上亿次，如果不加以aging的措施的话，可能会一直霸榜，这不是我们希望看到的。
-下面再来说一下main cache部分，采用的是Segmented LRU策略，即SLRU。其中会有两个部分：
-protected，这部分的对象比较安全，但是如果protected队列满了之后会将lru淘汰入probation队列。 probation，这部分的对象较为危险，如果probation队列满了之后会淘汰lru的对象，但是如果这部分中的对象又再次被访问之后此对象会升级进入protected队列。
-Expiration Policy caffeine中的过期策略有两种，分别是fixed expiration policy和variable expiration policy，下面进行简单介绍。</summary>
+window cache（绿色部分）: 新对象存入的区域；考虑到缓存的驱逐策略是基于类似LFU的粗略，这里的window cache是对新加入对象的一个保护策略，这些对象会现在window cache中呆一段时间，然后累积一定的frequency之后（LRU策略将其淘汰的时候）才会到TinyLFU中与其他缓存进行frequency的battle，决定去留； main cache （红色和蓝色部分）：大部分缓存所在的区域； TinyLFU (紫色部分，一个admission filter）：当window cache空间存满之后，来自window cache区域的victim将会和来自main cache区域的victim进行比较，判断二者出现频率的大小，如果前者更大，那么将会将前者插入main cache，淘汰掉后者；反之，淘汰掉前者；</summary>
             
                 <content type="html">&lt;h1 id=&#34;eviction-policy&#34;&gt;Eviction Policy&lt;/h1&gt;
 &lt;p&gt;在caffeine中缓存的管理使用的是Window TinyLFU(W-TinyLFU)的技术，结构如下图&lt;/p&gt;
@@ -847,7 +1194,7 @@ probation，这部分的对象较为危险，如果probation队列满了之后�
                     </author>
             <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)</rights><summary type="html">最近遇到的一个问题是，在更换了https的加密协议后（从ssl更换到tls），之前的post请求总是返回400 bad request这样的问题。网上搜罗了一下，有很多人遇到同样的400 bad request，但是各自的具体情况不尽相同，因此没有找到有效的解决方法。
 先说一下遇到的情况，对于某一个post请求，在postman中访问没有问题，但是在java代码中使用httpclient按照原先使用正常的方式去做请求，返回的response为一个null，没有其他具体信息，很难追溯。没有办法，只能一步一步跟进调试，一直跟到org.apache.http.impl.execchain包下MainClientExec.class这个类中，并且可以看到请求是正常发送出去，但是收到的response是null。由于对https的了解不是很足，起初怀疑是不是由于更换到tls后握手出现问题，于是调整org.apache.http这个包下的日志等级为debug，可以看到连接是正常建立，因此排除握手的问题。
-2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:423)]-[DEBUG] Secure session established 2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:424)]-[DEBUG] negotiated protocol: TLSv1.2 2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:425)]-[DEBUG] negotiated cipher suite: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 2020-03-19 16:10:35,120 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:433)]-[DEBUG] peer principal: CN=demo.bazefield.com, O=Bazefield A/S, L=Porsgrunn, C=NO 2020-03-19 16:10:35,120 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:442)]-[DEBUG] peer alternative names: [demo.bazefield.com, www.</summary>
+2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:423)]-[DEBUG] Secure session established 2020-03-19 16:10:35,119 [org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:424)]-[DEBUG] negotiated protocol: TLSv1.2 2020-03-19 16:10:35,119 [org.</summary>
             
                 <content type="html">&lt;p&gt;最近遇到的一个问题是，在更换了https的加密协议后（从ssl更换到tls），之前的post请求总是返回400 bad request这样的问题。网上搜罗了一下，有很多人遇到同样的400 bad request，但是各自的具体情况不尽相同，因此没有找到有效的解决方法。&lt;/p&gt;
 &lt;p&gt;先说一下遇到的情况，对于某一个post请求，在postman中访问没有问题，但是在java代码中使用httpclient按照原先使用正常的方式去做请求，返回的response为一个null，没有其他具体信息，很难追溯。没有办法，只能一步一步跟进调试，一直跟到org.apache.http.impl.execchain包下MainClientExec.class这个类中，并且可以看到请求是正常发送出去，但是收到的response是null。由于对https的了解不是很足，起初怀疑是不是由于更换到tls后握手出现问题，于是调整org.apache.http这个包下的日志等级为debug，可以看到连接是正常建立，因此排除握手的问题。&lt;/p&gt;
